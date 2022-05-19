@@ -1,5 +1,6 @@
 package org.zerock.ex2.repository;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,9 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.ex2.entity.Memo;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -125,7 +128,55 @@ class MemoRepositoryTest {
         for (Memo memo : result) {
             System.out.println(memo);
         }
+    }
+
+    @Test
+    public void testQueryMethod() {
+        List<Memo> list = memoRepository.findByMnoBetweenOrderByMnoDesc(70L, 80L);
+
+        for (Memo memo : list) {
+            System.out.println(memo);
+        }
+    }
+
+    @Test
+    public void testQueryMethodWithPageable() {
+        Sort sortDesc = Sort.by("mno").descending();
+        Pageable pageable = PageRequest.of(0, 10, sortDesc);
+        Page<Memo> result = memoRepository.findByMnoBetween(10L, 50L, pageable);
+
+        for (Memo memo : result) {
+            System.out.println(memo);
+        }
 
     }
 
+    @Commit
+    @Transactional
+    @Test
+    public void testDeleteQueryMethod() { // deleteBy는 잘 사용하지 않음. Page:77
+        memoRepository.deleteMemoByMnoLessThan(10L);
+    }
+
+    @Test
+    @DisplayName("Query 어노테이션 테스트")
+    public void testQueryAnnotation() {
+
+        memoRepository.updateMemoText(10L, "Change Content2");
+
+        Optional<Memo> result = memoRepository.findById(10L);
+        assertEquals(result.get().getMemoText(), "Change Content2");
+    }
+
+    @Test
+    @DisplayName("Pageable & Query 어노테이션 테스트")
+    public void testPageableAndQueryTest() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Memo> result = memoRepository.findAll(pageable);
+
+        Page memoPage = memoRepository.getListWithQuery(20L, result.getPageable());
+        System.out.println("============");
+        System.out.println(memoPage.getTotalElements());
+        System.out.println("============");
+    }
 }
