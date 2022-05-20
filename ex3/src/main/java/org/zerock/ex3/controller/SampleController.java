@@ -40,4 +40,9 @@ public class SampleController {
         model.addAttribute("list", list);
         return "sample/ex2";
     }
+
+    @GetMapping("/exSidebar")
+    public void exLayout1() {
+        log.info("exLayout...........");
+    }
 }
