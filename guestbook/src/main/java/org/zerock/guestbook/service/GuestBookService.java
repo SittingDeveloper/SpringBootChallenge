@@ -1,11 +1,15 @@
 package org.zerock.guestbook.service;
 
 import org.zerock.guestbook.dto.GuestBookDTO;
+import org.zerock.guestbook.dto.PageRequestDTO;
+import org.zerock.guestbook.dto.PageResultDTO;
 import org.zerock.guestbook.entity.GuestBook;
 
 public interface GuestBookService {
 
     Long register(GuestBookDTO dto);
+
+    PageResultDTO<GuestBookDTO, GuestBook> getList(PageRequestDTO requestDTO);
 
     /*
     인터페이스에 추상 메서드를 생성하면
@@ -20,5 +24,18 @@ public interface GuestBookService {
                 .writer(dto.getWriter())
                 .build();
         return entity;
+    }
+
+    default GuestBookDTO entityToDto(GuestBook entity) {
+        GuestBookDTO dto = GuestBookDTO.builder()
+                .gno(entity.getGno())
+                .title(entity.getTitle())
+                .content(entity.getContent())
+                .writer(entity.getWriter())
+                .regDate(entity.getRegDate())
+                .modDate(entity.getMoDate())
+                .build();
+
+        return dto;
     }
 }
