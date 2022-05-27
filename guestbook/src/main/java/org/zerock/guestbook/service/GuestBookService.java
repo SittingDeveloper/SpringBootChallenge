@@ -9,6 +9,12 @@ public interface GuestBookService {
 
     Long register(GuestBookDTO dto);
 
+    GuestBookDTO read(Long gno);
+
+    void modify(GuestBookDTO dto);
+
+    void remove(Long gno);
+
     PageResultDTO<GuestBookDTO, GuestBook> getList(PageRequestDTO requestDTO);
 
     /*

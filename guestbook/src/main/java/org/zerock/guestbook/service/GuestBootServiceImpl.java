@@ -12,6 +12,7 @@ import org.zerock.guestbook.dto.PageResultDTO;
 import org.zerock.guestbook.entity.GuestBook;
 import org.zerock.guestbook.repository.GuestBookRepository;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 @Log4j2
@@ -36,6 +37,32 @@ public class GuestBootServiceImpl implements GuestBookService{
         repository.save(entity);
 
         return entity.getGno();
+    }
+
+    @Override
+    public GuestBookDTO read(Long gno) {
+        Optional<GuestBook> result = repository.findById(gno);
+
+        return result.isPresent() ? entityToDto(result.get()) : null;
+    }
+
+    @Override
+    public void modify(GuestBookDTO dto) {
+        Optional<GuestBook> result = repository.findById(dto.getGno());
+
+        if (result.isPresent()) {
+            GuestBook entity = result.get();
+
+            entity.changeTitle(dto.getTitle());
+            entity.changeContent(dto.getContent());
+
+            repository.save(entity);
+        }
+    }
+
+    @Override
+    public void remove(Long gno) {
+        repository.deleteById(gno);
     }
 
     @Override
