@@ -41,7 +41,6 @@ public interface GuestBookService {
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
                 .build();
-
         return dto;
     }
 }
