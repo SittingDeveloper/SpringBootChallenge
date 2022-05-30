@@ -74,6 +74,8 @@ public class GuestBookController {
         log.info("post modify .......... ");
         log.info("dto : " + dto);
 
+        service.modify(dto);
+
         redirectAttributes.addAttribute("page", requestDTO.getPage());
         redirectAttributes.addAttribute("gno", dto.getGno());
 

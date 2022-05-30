@@ -39,7 +39,7 @@ public interface GuestBookService {
                 .content(entity.getContent())
                 .writer(entity.getWriter())
                 .regDate(entity.getRegDate())
-                .modDate(entity.getMoDate())
+                .modDate(entity.getModDate())
                 .build();
 
         return dto;
