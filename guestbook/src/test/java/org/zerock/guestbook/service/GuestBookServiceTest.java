@@ -60,4 +60,30 @@ class GuestBookServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("검색 처리 테스트")
+    public void testSearch() {
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(10)
+                .type("tc") // 검색조건 t,c,w,tc, tcw ...
+                .keyword("한글")
+                .build();
+
+        PageResultDTO<GuestBookDTO, GuestBook> resultDTO = service.getList(pageRequestDTO);
+
+        System.out.println("PREV : " + resultDTO.isPrev());
+        System.out.println("NEXT : " + resultDTO.isNext());
+        System.out.println("TOTAL : " + resultDTO.getTotalPage());
+
+        System.out.println("--------------------------------------");
+        for (GuestBookDTO guestBookDTO : resultDTO.getDtoList()) {
+            System.out.println(guestBookDTO);
+        }
+
+        System.out.println("======================================");
+        resultDTO.getPageList().forEach(i -> System.out.println(i));
+    }
+
 }
