@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @ToString
-public class Member extends BaseEntity{ // 회원
+public class Member extends BaseEntity { // 회원
 
     @Id
     private String email;
