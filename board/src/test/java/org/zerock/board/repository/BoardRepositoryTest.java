@@ -92,4 +92,10 @@ class BoardRepositoryTest {
         Object[] arr = (Object[]) result;
         System.out.println(Arrays.toString(arr));
     }
+
+    @Test
+    @DisplayName("Repository 확장 확인용 TestCode")
+    public void testSearch1() {
+        Board board = boardRepository.search1();
+    }
 }
