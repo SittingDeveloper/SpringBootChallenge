@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.board.entity.Board;
 import org.zerock.board.entity.Reply;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,6 +49,16 @@ class ReplyRepositoryTest {
 
         System.out.println("reply : " + reply);
         System.out.println(".getBoard : " + reply.getBoard());
+
+    }
+
+    @Test
+    @DisplayName("댓글 리스트 조회")
+    public void testListByBoard() {
+        List<Reply> replyList = replyRepository.getRepliesByBoardOrderByRno(Board.builder().bno(100L).build());
+        for (Reply reply : replyList) {
+            System.out.println(reply);
+        }
 
     }
 

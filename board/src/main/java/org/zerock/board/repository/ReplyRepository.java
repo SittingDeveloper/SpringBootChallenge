@@ -4,7 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.zerock.board.entity.Board;
 import org.zerock.board.entity.Reply;
+
+import java.util.List;
 
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
@@ -14,5 +17,7 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
             " where r.board.bno = :bno ")
     void deleteByBno(@Param("bno") Long bno);
 
+    // 특정 게시글의 번호에 의해서 댓글의 목록을 가져오는 함수
+    List<Reply> getRepliesByBoardOrderByRno(Board board);
 
 }

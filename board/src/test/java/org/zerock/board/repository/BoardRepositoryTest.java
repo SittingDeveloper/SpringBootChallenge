@@ -98,4 +98,12 @@ class BoardRepositoryTest {
     public void testSearch1() {
         Board board = boardRepository.search1();
     }
+
+    @Test
+    @DisplayName("JPQLQuery 로 Page<Object[]> 처리")
+    public void testSearchPage() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending().and(Sort.by("title").ascending()));
+        Page<Object[]> result = boardRepository.searchPage("t", "1", pageable);
+    }
+
 }
