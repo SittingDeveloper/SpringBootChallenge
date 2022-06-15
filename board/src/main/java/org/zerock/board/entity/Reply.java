@@ -22,4 +22,5 @@ public class Reply extends BaseEntity { // 댓글
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
+
 }
