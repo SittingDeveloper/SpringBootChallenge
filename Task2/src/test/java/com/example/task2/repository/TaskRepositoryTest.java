@@ -1,6 +1,8 @@
 package com.example.task2.repository;
 
+import com.example.task2.DTO.TaskDTO;
 import com.example.task2.entity.TaskEntity;
+import com.example.task2.service.TaskService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ class TaskRepositoryTest {
     @Autowired
     TaskRepository repository;
 
+    @Autowired
+    TaskService service;
     @Test
     @DisplayName("Create Test")
     public void creatTest() {
@@ -41,6 +45,18 @@ class TaskRepositoryTest {
 
         for (TaskEntity entity : entityList) {
             System.out.println(entity);
+        }
+
+    }
+
+    @Test
+    @DisplayName("ReadAll Test")
+    public void readAllTest() {
+
+        List<TaskDTO> dtoList = service.entityToDTO();
+
+        for (TaskDTO dto : dtoList) {
+            System.out.println(dto);
         }
 
     }

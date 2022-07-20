@@ -1,10 +1,7 @@
 package com.example.task2.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,13 +13,12 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @ToString
 @Entity
+@Getter
 public class TaskEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     String Str_Data;
     int Int_Data;
-
 }

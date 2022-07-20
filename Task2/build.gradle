@@ -40,6 +40,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.23' // 추가
     runtimeOnly 'org.postgresql:postgresql' // 추가
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.6'
 }
 
 tasks.named('test') {

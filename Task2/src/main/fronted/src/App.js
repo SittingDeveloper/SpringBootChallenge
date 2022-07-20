@@ -1,18 +1,25 @@
-import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
-import './App.css';
+// src/main/frontend/src/App.js
+
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 
 function App() {
-    const [message, setMessage] = useState("");
+
+    // 요청받은 정보를 담아줄 변수 선언
+    const [hello, setHello] = useState('')
+
+    // 첫 번째 렌더링을 마친 후 실행
     useEffect(() => {
-        fetch('/api/hello').then(response => response.text()).then(message => {
-            setMessage(message);
-        });
-    }, [])
-    return (<div className="App">
-        <header className="App-header"><img src={logo} className="App-logo" alt="logo"/>                <h1
-            className="App-title">{message}</h1></header>
-        <p className="App-intro"> To get started, edit <code>src/App.js</code> and save to reload. </p></div>)
+        axios.get('/api/hello')
+            .then(response => setHello(response.data))
+            .catch(error => console.log(error))
+    }, []);
+
+    return (
+        <header className="App-header">
+            백엔드에서 값을 가져옵니다 : {hello}
+        </header>
+    );
 }
 
 export default App;
