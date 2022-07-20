@@ -1,5 +1,6 @@
 // src/main/frontend/src/App.js
 
+import './App.css'
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
@@ -16,9 +17,12 @@ function App() {
     }, []);
 
     return (
-        <header className="App-header">
-            백엔드에서 값을 가져옵니다 : {hello}
-        </header>
+        <>
+            <header className="App-header">
+                <h1>Show Member</h1>
+                백엔드에서 값을 가져옵니다 : {hello}
+            </header>
+        </>
     );
 }
 
