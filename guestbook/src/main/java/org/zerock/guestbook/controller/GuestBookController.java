@@ -20,9 +20,7 @@ import org.zerock.guestbook.service.GuestBookService;
 @Log4j2
 @RequiredArgsConstructor
 public class GuestBookController {
-
     private final GuestBookService service;
-
     @GetMapping("/")
     public String index() {
         return "redirect:/guestbook/list";
