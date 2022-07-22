@@ -16,7 +16,7 @@ public class practiceController {
 
     private final TaskService service;
 
-    @GetMapping({"/", "/home"})
+    @GetMapping({"/api/home"})
     public List<TaskDTO> showMember() {
 
         List<TaskDTO> dtoList = service.entityToDTO();
