@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-const { kakao } = window;
+const {kakao} = window;
 
 const Map = () => {
-    const [map,setMap] = useState(null);
+    const [map, setMap] = useState(null);
 
     //처음 지도 그리기
-    useEffect(()=>{
+    useEffect(() => {
         const container = document.getElementById('map');
-        const options = { center: new kakao.maps.LatLng(33.450701, 126.570667) };
+        const options = {
+            // 좌표
+            center: new kakao.maps.LatLng(37.48048629785744, 126.89286416497653),
+            // 확대 레벨 1 >>> 5 : 확대 >>> 축소
+            level: 2
+        };
         const kakaoMap = new kakao.maps.Map(container, options);
         setMap(kakaoMap);
-    },[])
+    }, [])
 
     return (
         <div
@@ -22,7 +27,7 @@ const Map = () => {
                 marginRight: '5px',
             }}
         >
-            <div id="map" style={{ width: '99%', height: '100vh' }}></div>
+            <div id="map" style={{width: '100%', height: '100vh'}}></div>
         </div>
     );
 };

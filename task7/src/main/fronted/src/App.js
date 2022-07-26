@@ -1,11 +1,16 @@
-import logo from './logo.svg';
 import './App.css';
 import Sidebar from "./components/Sidebar";
+import Map from "./map/Map";
 
 function App() {
     return (
         <div className="App">
-            <Sidebar/>
+            <div>
+                <Sidebar/>
+            </div>
+            <div>
+                <Map/>
+            </div>
         </div>
     );
 }

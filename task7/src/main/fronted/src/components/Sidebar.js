@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
 import './Sidebar.css';
-import {RiMenuLine, RiLayoutGridFill, RiChat4Fill, RiTeamFill, RiTaskFill, RiPieChart2Fill} from "react-icons/ri";
+import {RiMenuLine} from "react-icons/ri";
+import {FaSchool} from "react-icons/fa";
+import {IoIosBusiness, IoIosPin} from "react-icons/io";
+
 
 function Sidebar() {
 
@@ -8,7 +11,7 @@ function Sidebar() {
     const [isExpanded, setIsExpanded] = useState(sidebarCollapsed ? false : true);
 
     const handleToggler = () => {
-        if(isExpanded) {
+        if (isExpanded) {
             setIsExpanded(false);
             localStorage.setItem('sidebar-collapsed', true);
             return;
@@ -20,7 +23,7 @@ function Sidebar() {
     return (
         <div className={isExpanded ? "Sidebar" : "Sidebar collapsed"}>
 
-            <div className= "sidebar-header">
+            <div className="sidebar-header">
                 <img className="logo_icon" alt="logo" src="img/logo.png"/>
             </div>
 
@@ -39,28 +42,24 @@ function Sidebar() {
             <div className="sidebar-items">
 
                 <div className="item">
-                    <RiLayoutGridFill className="sidebar-icon"/>
-                    <span className="sidebar-text">Dashboard</span>
+                    <FaSchool className="sidebar-icon"/>
+                    <span className="sidebar-text">
+                        학교자료
+                    </span>
                 </div>
 
                 <div className="item">
-                    <RiChat4Fill className="sidebar-icon"/>
-                    <span className="sidebar-text">Chat</span>
+                    <IoIosPin className="sidebar-icon"/>
+                    <span className="sidebar-text">
+                        지역일반
+                    </span>
                 </div>
 
                 <div className="item">
-                    <RiTeamFill className="sidebar-icon"/>
-                    <span className="sidebar-text">Teams</span>
-                </div>
-
-                <div className="item">
-                    <RiTaskFill className="sidebar-icon"/>
-                    <span className="sidebar-text">Tasks</span>
-                </div>
-
-                <div className="item">
-                    <RiPieChart2Fill className="sidebar-icon"/>
-                    <span className="sidebar-text">Analytics</span>
+                    <IoIosBusiness className="sidebar-icon"/>
+                    <span className="sidebar-text">
+                        지역인프라
+                    </span>
                 </div>
 
             </div>
