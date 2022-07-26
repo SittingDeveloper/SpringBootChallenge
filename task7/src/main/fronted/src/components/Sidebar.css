@@ -1,0 +1,107 @@
+.Sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 100%;
+    background-color: #26262c;
+    color: #ffffff;
+}
+
+/*hidden icon*/
+.sidebar-hidden {
+    position: fixed;
+    cursor: pointer;
+    /*width: 1.25em;*/
+    /*height: 1.25em;*/
+    /*margin-right: 16px;*/
+    top: 1.25em;
+    left: 1.10em;
+
+    border-style: solid;
+    border-width: 1px;
+
+}
+
+/**/
+
+.logo_icon {
+    position: center;
+    width: 170px;
+    height: 160px;
+}
+
+.sidebar-logo {
+    font-size: 16px;
+}
+
+.sidebar-icon {
+    width: 1.25em;
+    height: 1.25em;
+    margin-right: 16px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+}
+
+.sidebar-items {
+    display: flex;
+    flex-direction: column;
+    padding: 0 8px;
+}
+
+.sidebar-items .item {
+    display: flex;
+    align-items: center;
+    padding: 16px 8px;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.sidebar-items .item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+
+/* collapsed 속성 */
+.Sidebar.collapsed {
+    width: 52px;
+}
+
+/* hidden 아이콘 */
+/*.Sidebar.collapsed .sidebar-icon {
+    position: fixed;
+    width: 1.25em;
+    height: 1.25em;
+    margin-right: 0;
+}*/
+
+.Sidebar.collapsed .logo_icon {
+    margin-right: 0;
+    width: 30px;
+    height: 20px;
+}
+
+
+.Sidebar.collapsed .sidebar-hidden {
+    cursor: pointer;
+    margin-right: 0;
+    top: 50px;
+}
+
+.Sidebar.collapsed .sidebar-text,
+.Sidebar.collapsed .sidebar-logo,
+.Sidebar.collapsed .sidebar-icon{
+    width: 1.25em;
+    height: 1.25em;
+    display: none;
+}
