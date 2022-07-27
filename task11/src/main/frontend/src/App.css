@@ -36,38 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-.show-menu{
-  width: 376px;
-  height: 500px;
-  position: absolute;
-  left: 0px;
-  transition: 1s;
-}
-
-.hide-menu{
-  width: 376px;
-  height: 500px;
-  position: absolute;
-  left: -376px;
-  transition: 1s;
-}
-
-.boxcss {
-  width: 40px;
-  height: 40px;
-  background-color: rgb(182, 121, 121);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-.gray_boxcss {
-  width: 40px;
-  height: 40px;
-  background-color: rgb(159, 159, 159);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
