@@ -32,9 +32,11 @@ function Sidebar() {
                         <span className="icon"><i className="fa-solid fa-location-dot"></i></span>지역일반</a>
 
                     <ul className="collapse list-unstyled" id="localSubmenu">
-                        <li><a href="#">localSub 1</a></li>
-                        <li><a href="#">localSub 2</a></li>
-                        <li><a href="#">localSub 3</a></li>
+                        <li><a href="#">지역 재정</a></li>
+                        <li><a href="#">지역 경제</a></li>
+                        <li><a href="#">지역 인구</a></li>
+                        <li><a href="#">인구변화 추이</a></li>
+                        <li><a href="#">지역 복지</a></li>
                     </ul>
                 </li>
 
@@ -44,9 +46,16 @@ function Sidebar() {
                         <span className="icon"><i className="fa-solid fa-building"></i></span>지역인프라</a>
 
                     <ul className="collapse list-unstyled" id="infraSubmenu">
-                        <li><a href="#">infraSub 1</a></li>
-                        <li><a href="#">infraSub 2</a></li>
-                        <li><a href="#">infraSub 3</a></li>
+                        <li><a href="#">학원교습소현황</a></li>
+                        <li><a href="#">평생교육기관현황</a></li>
+                        <li><a href="#">대학현황</a></li>
+                        <li><a href="#">공공도서관현황</a></li>
+                        <li><a href="#">지역아동센터현황</a></li>
+                        <li><a href="#">체육시설현황</a></li>
+                        <li><a href="#">향토문화유적현황</a></li>
+                        <li><a href="#">문화시설현황</a></li>
+                        <li><a href="#">학교폭력현황</a></li>
+                        <li><a href="#">다문화학생현황</a></li>
                     </ul>
                 </li>
 
