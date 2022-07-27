@@ -5,6 +5,7 @@ function App() {
   return (
     <div className="App">
         <Sidebar/>
+        KAKAO GIS MAP
     </div>
   );
 }
