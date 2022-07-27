@@ -60,7 +60,13 @@ function Sidebar() {
                 </li>
 
                 <li>
-                    <a href="#"><span className="icon"><i className="fas fa-mobile-alt"></i></span>Other</a>
+                    <a href="https://www.clamos.io/dtrix-products">
+                        <span className="icon">
+                            <i className="fas fa-mobile-alt">
+                            </i>
+                        </span>
+                        Clamos
+                    </a>
                 </li>
 
             </ul>

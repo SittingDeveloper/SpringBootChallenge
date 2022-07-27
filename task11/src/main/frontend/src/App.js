@@ -1,12 +1,14 @@
 import './App.css';
 import Sidebar from "./sidebar/Sidebar";
-import KakaoMap from "./map/KakaoMap";
+import Map from "./map/Map";
+import LandingPage from "./SearchPlace/LandingPage";
 
 function App() {
   return (
     <div className="App">
         <Sidebar/>
-        <KakaoMap/>
+        {/*<Map/>*/}
+        <LandingPage/>
     </div>
   );
 }
