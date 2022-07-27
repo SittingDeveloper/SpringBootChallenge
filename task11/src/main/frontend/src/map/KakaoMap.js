@@ -1,9 +1,10 @@
 /* global kakao */
 import React, {useEffect, useState} from 'react';
+import './KakaoMap.css';
 
 const {kakao} = window;
 
-const Map = () => {
+const KakaoMap = () => {
     const [map, setMap] = useState(null);
 
     //처음 지도 그리기
@@ -33,4 +34,4 @@ const Map = () => {
     );
 };
 
-export default Map;
+export default KakaoMap;
