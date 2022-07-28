@@ -1,7 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Sidebar.css';
+import '../SearchPlace/LandingPage';
+import MapContainer from '../SearchPlace/MapContainer'
+import LandingPage from "../SearchPlace/LandingPage";
 
 function Sidebar() {
+
+    const [InputText, setInputText] = useState('')
+    const [Place, setPlace] = useState('')
+
+    const onChange = (e) => {
+        setInputText(e.target.value)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setPlace(InputText)
+        setInputText('')
+    }
+
     return (
         <nav id="sidebar">
             <div className="sidebar-header">
@@ -68,8 +85,15 @@ function Sidebar() {
                         Clamos
                     </a>
                 </li>
-
             </ul>
+
+            {/*input This*/}
+            <form className="inputForm" onSubmit={handleSubmit}>
+                <input placeholder="Search place .." onChange={onChange} value={InputText}/>
+                <button type="submit">
+                    <i className="fa-solid fa-magnifying-glass-location"></i>
+                </button>
+            </form>
         </nav>
     );
 }
