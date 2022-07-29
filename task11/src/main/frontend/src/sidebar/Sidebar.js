@@ -94,6 +94,9 @@ function Sidebar() {
                     <i className="fa-solid fa-magnifying-glass-location"></i>
                 </button>
             </form>
+
+            {Place}
+
         </nav>
     );
 }
