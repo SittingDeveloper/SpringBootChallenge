@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class InitController {
 
-    String place = "is Null";
+    String place = "isNull";
 
     @GetMapping("/api/page")
     public void getPlace(@RequestParam String InputText) {

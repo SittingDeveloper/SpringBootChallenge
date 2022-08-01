@@ -95,7 +95,7 @@ function Sidebar() {
                 <input placeholder="Search place .." onChange={onChange} value={InputText}/>
                 <button className="inputForm" onClick={
                     () => {
-                        console.log(InputText)
+                        console.log("sidebar : " + InputText)
                         axios.get('/api/page', {
                             params:{
                                 InputText

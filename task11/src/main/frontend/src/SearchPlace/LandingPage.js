@@ -7,17 +7,11 @@ function LandingPage() {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-
-        // fetch(url,options) : HTTP 요청 함수
-        fetch('/api/search')
-            .then(response => response.text())
-            .then(message => {
-                setMessage(message);
-            });
-
-        console.log("Landing Page : " + message)
-    }, [])
-
+        axios.get('/api/search')
+            .then(response => {
+                setMessage(response.data);
+            })
+    }, []);
 
     return (
         <div>
