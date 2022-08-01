@@ -8,8 +8,8 @@ function App() {
   return (
     <div className="App">
         <Sidebar/>
-        {/*<Map/>*/}
         <LandingPage/>
+        {/*<Map/>*/}
         {/*<MapContainer/>*/}
     </div>
   );

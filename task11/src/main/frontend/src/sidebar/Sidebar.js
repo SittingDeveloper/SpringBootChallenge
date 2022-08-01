@@ -3,6 +3,9 @@ import './Sidebar.css';
 import '../SearchPlace/LandingPage';
 import MapContainer from '../SearchPlace/MapContainer'
 import LandingPage from "../SearchPlace/LandingPage";
+import axios from "axios";
+
+export var cur_place;
 
 function Sidebar() {
 
@@ -88,17 +91,28 @@ function Sidebar() {
             </ul>
 
             {/*input This*/}
-            <form className="inputForm" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} type="submit">
                 <input placeholder="Search place .." onChange={onChange} value={InputText}/>
-                <button type="submit">
+                <button className="inputForm" onClick={
+                    () => {
+                        console.log(InputText)
+                        axios.get('/api/page', {
+                            params:{
+                                InputText
+                            }
+                        }).catch(function () {
+                            console.log("실패함")
+                        })
+                        // window.location.reload("");
+                    }
+                } >
                     <i className="fa-solid fa-magnifying-glass-location"></i>
                 </button>
             </form>
-
-            {Place}
-
         </nav>
     );
 }
+
+
 
 export default Sidebar;

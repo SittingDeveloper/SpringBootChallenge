@@ -23,9 +23,11 @@ function App() {
             <header className="App-header">
                 <h1>Show Member</h1>
                 {list.map((item) =>
-                    <p>Member_id : {item.id} <br/>
+                    <p>
+                        Member_id : {item.id} <br/>
                         String_Data : {item.str_Data} <br/>
-                        Int_Data : {item.int_Data}</p>)}
+                        Int_Data : {item.int_Data}
+                    </p>)}
             </header>
         </>
     );
