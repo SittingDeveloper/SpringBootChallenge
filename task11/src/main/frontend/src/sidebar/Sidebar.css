@@ -73,3 +73,18 @@ a.dropdown-toggle.collapsed.dropdown-toggle::after {
     float: left;
     margin-left: 30px;
 }
+
+#sidebar input, input:focus {
+    background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
+    background-position: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+
+
+    border: none;
+    border-radius: 2pt;
+    box-shadow: 0 0 0 1pt grey;
+    outline: none;
+    transition: .1s;
+}
