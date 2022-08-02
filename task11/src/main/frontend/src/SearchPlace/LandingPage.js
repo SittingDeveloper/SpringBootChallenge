@@ -9,8 +9,6 @@ function LandingPage(){
 
     // const myPlace = useContext(getPlace);
 
-
-
     return (
         <div>
             {console.log("LandingPage")}

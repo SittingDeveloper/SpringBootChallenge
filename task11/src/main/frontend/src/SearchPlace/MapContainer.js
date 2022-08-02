@@ -6,6 +6,7 @@ const MapContainer = ({ searchPlace }) => {
     useEffect(() => {
         var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 })
         const container = document.getElementById('myMap')
+
         const options = {
             center: new kakao.maps.LatLng(37.48048629785744, 126.89286416497653),
             level: 1,

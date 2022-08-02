@@ -7,19 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class InitController {
 
-    String place = "isNull";
-
     @GetMapping("/api/page")
-    public void getPlace(@RequestParam String InputText) {
-
-        place = InputText;
-
-        System.out.println(place);
+    public String getPlace() {
+        return"Hi";
     }
-
-    @GetMapping("/api/search")
-    public String searchPlace() {
-        return place;
-    }
-
 }

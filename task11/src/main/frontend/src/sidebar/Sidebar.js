@@ -9,7 +9,7 @@ import MapContainer from "../SearchPlace/MapContainer";
 function Sidebar() {
 
     const [InputText, setInputText] = useState('')
-    const [Place, setPlace] = useState('')
+    const [Place, setPlace] = useState("경기도")
 
     const onChange = (e) => {
         setInputText(e.target.value)
@@ -87,7 +87,17 @@ function Sidebar() {
                     </li>
 
                     <li>
-                        <a href="https://www.clamos.io/dtrix-products">
+                        <a href="#praticeMenu" data-toggle="collapse" aria-expanded="false"
+                           className="dropdown-toggle collapsed">
+                            <span className="icon"></span>ListMenu</a>
+
+                        <ul className="collapse list-unstyled" id="praticeMenu">
+                            <li><a href="#">학원교습소현황</a></li>
+                        </ul>
+                    </li>
+
+                    <li onClick={() => setPlace("클라모스")}>
+                        <a href="#clamos">
                         <span className="icon">
                             <i className="fas fa-mobile-alt">
                             </i>
@@ -95,14 +105,13 @@ function Sidebar() {
                             Clamos
                         </a>
                     </li>
+
                 </ul>
 
-                {/*input This*/}
+                {/* 검색창 */}
                 <form onSubmit={handleSubmit} type="submit">
                     <input placeholder="Search place .." onChange={onChange} value={InputText} />
-                    {/*<button class = "btn_search">*/}
-                    {/*    <i className="fa-solid fa-magnifying-glass-location"></i>*/}
-                    {/*</button>*/}
+                {/*    이곳에서 Place 가 결정된다    */}
                 </form>
             </nav>
 
