@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Sidebar.css';
 import '../SearchPlace/LandingPage';
 import MapContainer from '../SearchPlace/MapContainer'
 import LandingPage from "../SearchPlace/LandingPage";
 import axios from "axios";
 
-export var cur_place;
+// export let cur_place;
 
 function Sidebar() {
 
@@ -16,10 +16,17 @@ function Sidebar() {
         setInputText(e.target.value)
     }
 
+    useEffect(() => {
+        console.log("Sidebar" + "렌더링이 완료될 때 마다 실행")
+    })
+
     const handleSubmit = (e) => {
         e.preventDefault()
         setPlace(InputText)
+        sessionStorage.setItem("key", InputText);
+        console.log("Sidebar : " + sessionStorage.getItem("key"));
         setInputText('')
+        // window.location.reload();
     }
 
     return (
@@ -93,22 +100,11 @@ function Sidebar() {
             {/*input This*/}
             <form onSubmit={handleSubmit} type="submit">
                 <input placeholder="Search place .." onChange={onChange} value={InputText}/>
-                <button className="inputForm" onClick={
-                    () => {
-                        console.log("sidebar : " + InputText)
-                        axios.get('/api/page', {
-                            params:{
-                                InputText
-                            }
-                        }).catch(function () {
-                            console.log("실패함")
-                        })
-                        // window.location.reload("");
-                    }
-                } >
+                <button>
                     <i className="fa-solid fa-magnifying-glass-location"></i>
                 </button>
             </form>
+            {Place}
         </nav>
     );
 }

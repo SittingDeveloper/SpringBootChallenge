@@ -1,24 +1,20 @@
 import React, {useEffect, useState} from 'react'
-import MapContainer from './MapContainer'
-import axios from "axios";
 
-function LandingPage() {
+function LandingPage(){
 
-    const [message, setMessage] = useState("");
-
+    // 렌더링
     useEffect(() => {
-        axios.get('/api/search')
-            .then(response => {
-                setMessage(response.data);
-            })
-    }, []);
+        console.log("LandingPage" + "렌더링이 완료될 때 마다 실행")
+    })
 
     return (
-        <div>
-            {message}
+        <div value>
+            {/*{message}*/}
+            {/*{console.log("landing : " + sessionStorage.getItem("key"))}*/}
             {/*<MapContainer searchPlace={message}/>*/}
         </div>
     );
+
 }
 
 export default LandingPage;
