@@ -1,12 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Sidebar.css';
 import '../SearchPlace/LandingPage';
 import LandingPage from "../SearchPlace/LandingPage";
 import Store from "../store"
 import MapContainer from "../SearchPlace/MapContainer";
+import axios from "axios";
 
 // export let cur_place;
 function Sidebar() {
+
+    const [subTitle, setSubtitle] = useState([]);
 
     const [InputText, setInputText] = useState('')
     const [Place, setPlace] = useState("경기도")
@@ -25,8 +28,15 @@ function Sidebar() {
         console.log("sidebar : " + InputText)
         setInputText('')
         // window.location.reload();
-
     }
+
+    useEffect(() => {
+        axios.get('/api/page')
+            .then(response => setSubtitle(response.data))
+            .catch(error => console.log(error));
+    }, []);
+
+    console.log(subTitle);
 
     return (
         <div>
@@ -91,9 +101,13 @@ function Sidebar() {
                            className="dropdown-toggle collapsed">
                             <span className="icon"></span>ListMenu</a>
 
+                        {/*SpringBoot에서 넘어온 값을 React로 받은 부분*/}
                         <ul className="collapse list-unstyled" id="praticeMenu">
-                            <li><a href="#">학원교습소현황</a></li>
+                            {subTitle.map((item) =>
+                                <li key={item.id}><a href="#">{item.subTitle}</a></li>
+                            )}
                         </ul>
+
                     </li>
 
                     <li onClick={() => setPlace("클라모스")}>
@@ -110,8 +124,8 @@ function Sidebar() {
 
                 {/* 검색창 */}
                 <form onSubmit={handleSubmit} type="submit">
-                    <input placeholder="Search place .." onChange={onChange} value={InputText} />
-                {/*    이곳에서 Place 가 결정된다    */}
+                    <input placeholder="Search place .." onChange={onChange} value={InputText}/>
+                    {/*    이곳에서 Place 가 결정된다    */}
                 </form>
             </nav>
 
