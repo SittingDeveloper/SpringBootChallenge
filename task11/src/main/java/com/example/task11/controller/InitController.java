@@ -22,4 +22,9 @@ public class InitController {
 
         return dtoList;
     }
+
+    @GetMapping("/")
+    public String InitPage() {
+        return "InitPage";
+    }
 }

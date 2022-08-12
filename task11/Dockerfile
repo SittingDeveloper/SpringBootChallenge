@@ -1,4 +1,6 @@
+
 FROM openjdk:18
-ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+ADD build/libs/task11-0.0.1-SNAPSHOT.war app.war
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/app.war"]
+

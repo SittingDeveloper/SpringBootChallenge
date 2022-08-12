@@ -12,6 +12,20 @@
     transition: all 0.5s ease;
 }
 
+#sub_Sidebar {
+    z-index: 2;
+    position: fixed;
+    width: 250px;
+    height: 50%;
+    left: 250px;
+    overflow-y: auto;
+    background: #1b1b26;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
 #sidebar .sidebar-header a {
     color: #fff;
     display: block;

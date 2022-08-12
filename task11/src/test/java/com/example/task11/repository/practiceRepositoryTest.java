@@ -43,7 +43,6 @@ class practiceRepositoryTest {
         for (sidebar_Dto dto : dtoList) {
             System.out.println(dto);
         }
-
     }
 
 }
