@@ -102,3 +102,56 @@ a.dropdown-toggle.collapsed.dropdown-toggle::after {
     outline: none;
     transition: .1s;
 }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.show-menu {
+    /*width: 376px;
+    height: 500px;
+    position: fixed;
+    left: 0px;
+    transition: 1s;*/
+    z-index: 2;
+    position: fixed;
+    top: 0px;
+    width: 250px;
+    height: 50%;
+    left: 250px;
+    overflow-y: auto;
+    background: #1b1b26;
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+    color: white;
+
+    /*-webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;*/
+}
+
+.hide-menu {
+    /*width: 376px;
+    height: 500px;
+    position: fixed;
+    left: -376px;
+    transition: 1s;*/
+    z-index: 2;
+    position: fixed;
+    top: 0px;
+    width: 250px;
+    height: 50%;
+    left: -250px;
+    overflow-y: auto;
+    background: #1b1b26;
+    /*-webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;*/
+}

@@ -1,33 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import './Sidebar.css';
 import '../SearchPlace/LandingPage';
-import LandingPage from "../SearchPlace/LandingPage";
-import Store from "../store"
 import MapContainer from "../SearchPlace/MapContainer";
 import axios from "axios";
 
-// export let cur_place;
 function Sidebar() {
 
     const [subTitle, setSubtitle] = useState([]);
-
     const [InputText, setInputText] = useState('')
     const [Place, setPlace] = useState("경기도")
+    const [isOpen, setMenu] = useState(false); // subMenu, default false
+
+    const toggleMenu = () => {
+        setMenu(isOpen => !isOpen); // on,off Boolean 개념
+    }
+
+    const hideMenu = () => {
+        setMenu(isOpen => false)
+    }
 
     const onChange = (e) => {
         setInputText(e.target.value)
     }
-
-    /*useEffect(() => {
-        console.log("Sidebar" + "렌더링이 완료될 때 마다 실행")
-    })*/
 
     const handleSubmit = (e) => {
         e.preventDefault()
         setPlace(InputText)
         console.log("sidebar : " + InputText)
         setInputText('')
-        // window.location.reload();
     }
 
     useEffect(() => {
@@ -51,7 +51,7 @@ function Sidebar() {
 
                     <li>
                         <a href="#schoolSubmenu" data-toggle="collapse" aria-expanded="false"
-                           className="dropdown-toggle collapsed">
+                           className="dropdown-toggle collapsed" onClick={() => hideMenu()}>
                             <span className="icon"><i className="fa-solid fa-school"></i></span>
                             학교자료
                         </a>
@@ -65,7 +65,7 @@ function Sidebar() {
 
                     <li>
                         <a href="#localSubmenu" data-toggle="collapse" aria-expanded="false"
-                           className="dropdown-toggle collapsed">
+                           className="dropdown-toggle collapsed" onClick={() => hideMenu()}>
                             <span className="icon"><i className="fa-solid fa-location-dot"></i></span>지역일반</a>
 
                         <ul className="collapse list-unstyled" id="localSubmenu">
@@ -79,13 +79,23 @@ function Sidebar() {
 
                     <li>
                         <a href="#infraSubmenu" data-toggle="collapse" aria-expanded="false"
-                           className="dropdown-toggle collapsed">
+                           className="dropdown-toggle collapsed" onClick={() => hideMenu()}>
                             <span className="icon"><i className="fa-solid fa-building"></i></span>지역인프라</a>
 
-                        <ul className="collapse list-unstyled" id="infraSubmenu">
+                        <ul className="collapse list-unstyled" id="infraSubmenu" >
                             <li><a href="#">학원교습소현황</a></li>
                             <li><a href="#">평생교육기관현황</a></li>
-                            <li><a href="#">대학현황</a></li>
+                            <li>
+                                <a href="#" onClick={() => toggleMenu()} >
+                                    대학현황
+                                </a>
+                                <div className={isOpen ? "show-menu" : "hide-menu"}>
+                                    <h4>
+                                        대학현황
+                                        {console.log("서브메뉴 : " + isOpen)}
+                                    </h4>
+                                </div>
+                            </li>
                             <li><a href="#">공공도서관현황</a></li>
                             <li><a href="#">지역아동센터현황</a></li>
                             <li><a href="#">체육시설현황</a></li>
@@ -98,7 +108,7 @@ function Sidebar() {
 
                     <li>
                         <a href="#praticeMenu" data-toggle="collapse" aria-expanded="false"
-                           className="dropdown-toggle collapsed">
+                           className="dropdown-toggle collapsed" onClick={() => hideMenu()}>
                             <span className="icon"></span>ListMenu</a>
 
                         {/*SpringBoot에서 넘어온 값을 React로 받은 부분*/}

@@ -6,7 +6,8 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 module.exports = function (app) {
     app.use(
         createProxyMiddleware("/api", {
-            target: "http://springboot:8080", // 비즈니스 서버 URL 설정
+            // target: "http://springboot:8080", // 배포 서버 URL 설정
+            target: "http://localhost:8080", // 로컬 서버 URL 설정
             changeOrigin: true,
         })
     );
