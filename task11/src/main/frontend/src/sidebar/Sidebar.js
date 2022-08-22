@@ -11,25 +11,18 @@ function Sidebar() {
     const [Place, setPlace] = useState("경기도")
     const [isOpen, setMenu] = useState(false); // subMenu, default false
 
+    // Sub-Section 개별 실행 state
     const [flagNumber,setFlagNumber] = useState(0);
+
     const toggleMenu = (checked_id) => {
 
-        // if (checked_id.target.parentElement.children[1].classList.contains())
+        setMenu(() => false)
+
         console.log("checked_id : " + checked_id)
         setFlagNumber(checked_id);
 
-        /*switch (checked_id){
-            case "1" :
-                setMenu();
-                break;
-
-            case "2" :
-                setMenu();
-                break;
-
-        }*/
-
         setMenu(isOpen => !isOpen); // on,off Boolean 개념
+
     };
 
     const hideMenu = () => {
@@ -104,11 +97,9 @@ function Sidebar() {
                                 <a href="#" onClick={() => toggleMenu("1")}>
                                     대학현황
                                 </a>
-                                <div className={isOpen ?  "show-menu" : "hide-menu"}>
+                                <div className={ (flagNumber=="1" && isOpen) ? "show-menu" : "hide-menu"}>
                                     <h4>
                                         대학현황
-                                        {console.log()}
-                                        {console.log("대학현황 메뉴 : " + isOpen)}
                                     </h4>
                                 </div>
                             </li>
@@ -116,10 +107,9 @@ function Sidebar() {
                                 <a href="#" onClick={() => toggleMenu("2")}>
                                     공공도서관현황
                                 </a>
-                                <div className={isOpen ? "show-menu" : "hide-menu"}>
+                                <div className={ (flagNumber=="2" && isOpen) ? "show-menu" : "hide-menu"}>
                                     <h4>
                                         공공도서관현황
-                                        {console.log("공공도서관현황 서브메뉴 : " + isOpen)}
                                     </h4>
                                 </div>
                             </li>
