@@ -11,12 +11,29 @@ function Sidebar() {
     const [Place, setPlace] = useState("경기도")
     const [isOpen, setMenu] = useState(false); // subMenu, default false
 
-    const toggleMenu = () => {
+    const [flagNumber,setFlagNumber] = useState(0);
+    const toggleMenu = (checked_id) => {
+
+        // if (checked_id.target.parentElement.children[1].classList.contains())
+        console.log("checked_id : " + checked_id)
+        setFlagNumber(checked_id);
+
+        /*switch (checked_id){
+            case "1" :
+                setMenu();
+                break;
+
+            case "2" :
+                setMenu();
+                break;
+
+        }*/
+
         setMenu(isOpen => !isOpen); // on,off Boolean 개념
-    }
+    };
 
     const hideMenu = () => {
-        setMenu(isOpen => false)
+        setMenu(() => false)
     }
 
     const onChange = (e) => {
@@ -35,8 +52,6 @@ function Sidebar() {
             .then(response => setSubtitle(response.data))
             .catch(error => console.log(error));
     }, []);
-
-    console.log(subTitle);
 
     return (
         <div>
@@ -86,17 +101,28 @@ function Sidebar() {
                             <li><a href="#">학원교습소현황</a></li>
                             <li><a href="#">평생교육기관현황</a></li>
                             <li>
-                                <a href="#" onClick={() => toggleMenu()} >
+                                <a href="#" onClick={() => toggleMenu("1")}>
                                     대학현황
                                 </a>
-                                <div className={isOpen ? "show-menu" : "hide-menu"}>
+                                <div className={isOpen ?  "show-menu" : "hide-menu"}>
                                     <h4>
                                         대학현황
-                                        {console.log("서브메뉴 : " + isOpen)}
+                                        {console.log()}
+                                        {console.log("대학현황 메뉴 : " + isOpen)}
                                     </h4>
                                 </div>
                             </li>
-                            <li><a href="#">공공도서관현황</a></li>
+                            <li>
+                                <a href="#" onClick={() => toggleMenu("2")}>
+                                    공공도서관현황
+                                </a>
+                                <div className={isOpen ? "show-menu" : "hide-menu"}>
+                                    <h4>
+                                        공공도서관현황
+                                        {console.log("공공도서관현황 서브메뉴 : " + isOpen)}
+                                    </h4>
+                                </div>
+                            </li>
                             <li><a href="#">지역아동센터현황</a></li>
                             <li><a href="#">체육시설현황</a></li>
                             <li><a href="#">향토문화유적현황</a></li>
