@@ -3,6 +3,7 @@ import './Sidebar.css';
 import '../SearchPlace/LandingPage';
 import MapContainer from "../SearchPlace/MapContainer";
 import axios from "axios";
+import Select from "react-select";
 
 function Sidebar() {
 
@@ -12,16 +13,24 @@ function Sidebar() {
     const [isOpen, setMenu] = useState(false); // subMenu, default false
 
     // Sub-Section 개별 실행 state
-    const [flagNumber,setFlagNumber] = useState(0);
+    const [flagNumber, setFlagNumber] = useState(0);
 
     const toggleMenu = (checked_id) => {
 
-        setMenu(() => false)
+        console.log("sessionStorage : " + sessionStorage.toggle);
 
-        console.log("checked_id : " + checked_id)
-        setFlagNumber(checked_id);
+        if (sessionStorage.toggle == checked_id) {
+            sessionStorage.toggle = checked_id;
+            setMenu(isOpen => !isOpen);
+        }
 
-        setMenu(isOpen => !isOpen); // on,off Boolean 개념
+        else {
+            setMenu(() => false);
+            console.log("checked_id : " + checked_id)
+            setFlagNumber(checked_id);
+            sessionStorage.toggle = checked_id;
+            setMenu(isOpen => !isOpen); // on,off Boolean 개념
+        }
 
     };
 
@@ -39,6 +48,16 @@ function Sidebar() {
         console.log("sidebar : " + InputText)
         setInputText('')
     }
+
+    const bySeries = [
+        { label : "인문계열", value : 1},
+        { label : "사회계열", value : 2},
+        { label : "교육계열", value : 3},
+        { label : "공학계열", value : 4},
+        { label : "자연계열", value : 5},
+        { label : "의약계열", value : 6},
+        { label : "예체능계열", value : 7},
+    ];
 
     useEffect(() => {
         axios.get('/api/page')
@@ -90,27 +109,92 @@ function Sidebar() {
                            className="dropdown-toggle collapsed" onClick={() => hideMenu()}>
                             <span className="icon"><i className="fa-solid fa-building"></i></span>지역인프라</a>
 
-                        <ul className="collapse list-unstyled" id="infraSubmenu" >
+                        <ul className="collapse list-unstyled" id="infraSubmenu">
                             <li><a href="#">학원교습소현황</a></li>
                             <li><a href="#">평생교육기관현황</a></li>
                             <li>
                                 <a href="#" onClick={() => toggleMenu("1")}>
                                     대학현황
                                 </a>
-                                <div className={ (flagNumber=="1" && isOpen) ? "show-menu" : "hide-menu"}>
-                                    <h4>
+                                <div className={(flagNumber == "1" && isOpen) ? "show-menu" : "hide-menu"}>
+
+                                    <h5>
                                         대학현황
-                                    </h4>
+                                    </h5>
+
+                                    <ul>
+
+                                        <li>
+                                            영역 선택
+                                            <div className="middle-button">
+                                                <button className="doubleButton">
+                                                    시군구별
+                                                </button>
+                                                <button className="doubleButton">
+                                                    행정동별
+                                                </button>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            설립별
+                                            <div className="middle-button">
+                                                <button className="tripleButton">
+                                                    국립
+                                                </button>
+                                                <button className="tripleButton">
+                                                    공립
+                                                </button>
+                                                <button className="tripleButton">
+                                                    사립
+                                                </button>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            주야별
+                                            <div className="middle-button">
+                                                <button className="doubleButton">
+                                                    주간
+                                                </button>
+                                                <button className="doubleButton">
+                                                    야간
+                                                </button>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <Select className="dropdown_items"
+                                                isSearchable={false}
+                                                placeholder={"계열별"}
+                                                options={bySeries}
+                                            />
+                                            {/*<select>
+                                                <option value={"humanities"}>인문계열</option>
+                                                <option value={"society"}>사회계열</option>
+                                                <option value={"education"}>교육계열</option>
+                                                <option value={"engineering"}>공학계열</option>
+                                                <option value={"nature"}>자연계열</option>
+                                                <option value={"medication"}>의약계열</option>
+                                                <option value={"artMusicPhysical"}>예체능계열</option>
+                                            </select>*/}
+                                        </li>
+
+                                    </ul>
+
                                 </div>
                             </li>
                             <li>
                                 <a href="#" onClick={() => toggleMenu("2")}>
                                     공공도서관현황
                                 </a>
-                                <div className={ (flagNumber=="2" && isOpen) ? "show-menu" : "hide-menu"}>
-                                    <h4>
+                                <div className={(flagNumber == "2" && isOpen) ? "show-menu" : "hide-menu"}>
+                                    <h5>
                                         공공도서관현황
-                                    </h4>
+                                    </h5>
+
+                                {/*    next, input this    */}
+
                                 </div>
                             </li>
                             <li><a href="#">지역아동센터현황</a></li>

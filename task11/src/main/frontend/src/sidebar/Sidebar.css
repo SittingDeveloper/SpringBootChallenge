@@ -1,7 +1,7 @@
 #sidebar {
     z-index: 2;
     position: fixed;
-    width: 250px;
+    width: 300px;
     height: 100%;
     left: 0px;
     overflow-y: auto;
@@ -10,20 +10,11 @@
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+    -ms-overflow-style: none;
 }
 
-#sub_Sidebar {
-    z-index: 2;
-    position: fixed;
-    width: 250px;
-    height: 50%;
-    left: 250px;
-    overflow-y: auto;
-    background: #1b1b26;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+#sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 #sidebar .sidebar-header a {
@@ -71,9 +62,11 @@ a.dropdown-toggle.collapsed.dropdown-toggle::after {
     margin-left: 5px;
     vertical-align: 5px;
     content: "";
+
     border-bottom: 5px solid;
     border-right: 5px solid transparent;
     border-top: 0;
+
     float: right;
     margin-top: 10px;
 }
@@ -103,6 +96,47 @@ a.dropdown-toggle.collapsed.dropdown-toggle::after {
     transition: .1s;
 }
 
+#sidebar ul li #infraSubmenu li div h5 {
+    padding: 20px 10px;
+    display: block;
+    background-color: #006d9f;
+
+}
+
+#sidebar ul li #infraSubmenu li div ul li {
+    text-align: left;
+    padding: 15px 18px;
+    font-size: 17px;
+    display: block;
+    /*border-bottom: 1px solid black;*/
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+#sidebar ul li #infraSubmenu li div ul li:nth-child(2n) {
+    text-align: left;
+    padding: 15px 18px;
+    font-size: 17px;
+    display: block;
+    /*border-bottom: 1px solid black;*/
+    background-color: #2f2f3f;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+/*버튼 중앙으로 정렬*/
+.middle-button {
+    text-align: center;
+    padding: 10px 10px;
+}
+
+/* li 점, padding 없애는 구문 */
+#sidebar ul li #infraSubmenu li div ul {
+    padding-left: 0px;
+    list-style: none;
+}
+
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -113,27 +147,24 @@ a.dropdown-toggle.collapsed.dropdown-toggle::after {
 }
 
 .show-menu {
-    /*width: 376px;
-    height: 500px;
-    position: fixed;
-    left: 0px;
-    transition: 1s;*/
     z-index: 2;
     position: fixed;
     top: 0px;
-    width: 250px;
-    height: 50%;
-    left: 250px;
+    width: 300px;
+    height: auto;
+    left: 300px;
     overflow-y: auto;
     background: #1b1b26;
     animation-name: fadeIn;
     animation-duration: 0.5s;
     color: white;
+    border-left: 1px solid grey;
+    -ms-overflow-style: none;
+    overflow: visible;
+}
 
-    /*-webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;*/
+.show-menu::-webkit-scrollbar {
+    display: none;
 }
 
 .hide-menu {
@@ -145,13 +176,61 @@ a.dropdown-toggle.collapsed.dropdown-toggle::after {
     z-index: 2;
     position: fixed;
     top: 0px;
-    width: 250px;
-    height: 50%;
-    left: -250px;
+    width: 300px;
+    height: auto;
+    left: -300px;
     overflow-y: auto;
     background: #1b1b26;
     /*-webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;*/
+}
+
+.doubleButton {
+    display: inline-block;
+    font-weight: 1000;
+    width: 110px;
+    height: 40px;
+    color: black;
+    background-color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    /*box-shadow: 0 4px 16px rgba(0, 79, 255, 0.3);*/
+}
+
+.tripleButton {
+    display: inline-block;
+    font-weight: 1000;
+    width: 70px;
+    height: 40px;
+    color: black;
+    background-color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    /*box-shadow: 0 4px 16px rgba(0, 79, 255, 0.3);*/
+}
+
+button:focus {
+    outline: 0;
+}
+
+button:hover {
+    animation-name: fadeIn;
+    animation-duration: 0.4s;
+    color: white;
+    background: rgb(255, 7, 7);
+    cursor: pointer;
+    /*box-shadow: 0 2px 4px rgba(0, 79, 255, 0.6);*/
+}
+
+/* 버튼 사이 간격 */
+button + button {
+    margin-left: 10px;
+}
+
+.dropdown_items {
+    color: black;
 }
