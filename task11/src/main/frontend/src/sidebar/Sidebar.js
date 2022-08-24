@@ -3,12 +3,14 @@ import React, {useEffect, useRef, useState} from 'react';
 import './Sidebar.css';
 import axios from "axios";
 import Select from "react-select";
-import {Map, MapMarker, MapTypeControl, ZoomControl} from "react-kakao-maps-sdk";
+import {Map, MapMarker, MarkerClusterer} from "react-kakao-maps-sdk";
 
 function Sidebar() {
 
-    const mapRef = useRef()
 
+
+    // 지도 View, Sky View 전환 기능
+    const mapRef = useRef()
     const setMapType = (maptype) => {
         const map = mapRef.current;
         const roadmapControl = document.getElementById("btnRoadmap");
@@ -24,6 +26,9 @@ function Sidebar() {
         }
     }
 
+
+
+    // ZoomIn / ZoomOut 기능
     const zoomIn = () => {
         const map = mapRef.current
         map.setLevel(map.getLevel() - 1)
@@ -32,6 +37,7 @@ function Sidebar() {
         const map = mapRef.current
         map.setLevel(map.getLevel() + 1)
     }
+
 
     // 지도위에 마커 그림
     const [info, setInfo] = useState()
@@ -342,9 +348,13 @@ function Sidebar() {
                     </MapMarker>
                 ))}
 
+
+
             </Map>
 
-            {/* 사용자 컨트롤러 */}
+
+
+            {/* View 전환 컨트롤러 */}
             <div className="custom_typecontrol radius_border">
                 <span
                     id="btnRoadmap"
@@ -365,7 +375,9 @@ function Sidebar() {
                 </span>
             </div>
 
-            {/* 지도 확대, 축소 컨트롤 */}
+
+
+            {/* 지도 확대, 축소 컨트롤러 */}
             <div className="custom_zoomcontrol radius_border">
                 <span onClick={zoomIn}>
                     <img
@@ -380,6 +392,9 @@ function Sidebar() {
                     />
                 </span>
             </div>
+
+
+
 
         </div>
     );
