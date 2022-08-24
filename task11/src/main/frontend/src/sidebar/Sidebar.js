@@ -1,5 +1,5 @@
 /*global kakao*/
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './Sidebar.css';
 import axios from "axios";
 import Select from "react-select";
@@ -7,13 +7,36 @@ import {Map, MapMarker, MapTypeControl, ZoomControl} from "react-kakao-maps-sdk"
 
 function Sidebar() {
 
+    const mapRef = useRef()
 
+    const setMapType = (maptype) => {
+        const map = mapRef.current;
+        const roadmapControl = document.getElementById("btnRoadmap");
+        const skyviewControl = document.getElementById("btnSkyview");
+        if (maptype === "roadmap") {
+            map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);
+            roadmapControl.className = "selected_btn";
+            skyviewControl.className = "btn";
+        } else {
+            map.setMapTypeId(kakao.maps.MapTypeId.HYBRID)
+            skyviewControl.className = "selected_btn"
+            roadmapControl.className = "btn"
+        }
+    }
+
+    const zoomIn = () => {
+        const map = mapRef.current
+        map.setLevel(map.getLevel() - 1)
+    }
+    const zoomOut = () => {
+        const map = mapRef.current
+        map.setLevel(map.getLevel() + 1)
+    }
 
     // 지도위에 마커 그림
     const [info, setInfo] = useState()
     const [markers, setMarkers] = useState([])
     const [map, setMap] = useState()
-
 
 
     // 사이드바의 검색을 통해 맵 이동
@@ -32,7 +55,6 @@ function Sidebar() {
         console.log("sidebar : " + InputText)
         setInputText('')
     }
-
 
 
     // Sub-Section 열고 닫는것을 관리 (Toggle 기능)
@@ -59,12 +81,10 @@ function Sidebar() {
     };
 
 
-
     // Sub-Section 강제로 숨기는 기능
     const hideMenu = () => {
         setMenu(() => false)
     }
-
 
 
     // LocalInfra -  cur_Universe - bySeries
@@ -79,7 +99,6 @@ function Sidebar() {
     ];
 
 
-
     // PostgreSQL 에서 가져온 값을 state 로 관리
     const [subTitle, setSubtitle] = useState([]);
 
@@ -88,7 +107,6 @@ function Sidebar() {
             .then(response => setSubtitle(response.data))
             .catch(error => console.log(error));
     }, []);
-
 
 
     // 지도 검색
@@ -122,7 +140,6 @@ function Sidebar() {
             }
         })
     }, [Place])
-
 
 
     return (
@@ -294,11 +311,13 @@ function Sidebar() {
 
             {/*<MapContainer searchPlace={Place}/>*/}
 
-            <Map // 지도를 표시할 Container
+
+            {/*지도를 표시할 Container*/}
+            <Map
                 center={{
                     // 지도의 중심좌표
-                    lat : 37.48048629785744,
-                    lng : 126.89286416497653,
+                    lat: 37.48048629785744,
+                    lng: 126.89286416497653,
                 }}
                 style={{
                     // 지도의 크기
@@ -307,23 +326,61 @@ function Sidebar() {
                 }}
                 level={2} // 지도의 확대 레벨
                 onCreate={setMap}
+                ref={mapRef}
             >
+
+                {/* 맵 마커 */}
                 {markers.map((marker) => (
                     <MapMarker
                         key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
                         position={marker.position}
                         onClick={() => setInfo(marker)}
                     >
-                        {info &&info.content === marker.content && (
-                            <div style={{color:"#000"}}>{marker.content}</div>
+                        {info && info.content === marker.content && (
+                            <div style={{color: "#000"}}>{marker.content}</div>
                         )}
                     </MapMarker>
                 ))}
 
-                <ZoomControl position={kakao.maps.ControlPosition.TOPRIGHT}/>
-                <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT}/>
-
             </Map>
+
+            {/* 사용자 컨트롤러 */}
+            <div className="custom_typecontrol radius_border">
+                <span
+                    id="btnRoadmap"
+                    className="selected_btn"
+                    onClick={() =>
+                        setMapType("roadmap") }
+                >
+                    지도
+                </span>
+
+                <span
+                    id="btnSkyview"
+                    className="btn"
+                    onClick={() =>
+                        setMapType("skyview") }
+                >
+                    스카이뷰
+                </span>
+            </div>
+
+            {/* 지도 확대, 축소 컨트롤 */}
+            <div className="custom_zoomcontrol radius_border">
+                <span onClick={zoomIn}>
+                    <img
+                        src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
+                        alt="확대"
+                    />
+                </span>
+                <span onClick={zoomOut}>
+                    <img
+                        src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
+                        alt="축소"
+                    />
+                </span>
+            </div>
+
         </div>
     );
 }
