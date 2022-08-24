@@ -1,51 +1,25 @@
-/*global kakao*/
 import React, {useEffect, useState} from 'react';
 import './Sidebar.css';
+// import '../SearchPlace/LandingPage';
+import MapContainer from "../SearchPlace/MapContainer";
 import axios from "axios";
 import Select from "react-select";
-import {Map, MapMarker, MapTypeControl, ZoomControl} from "react-kakao-maps-sdk";
 
 function Sidebar() {
 
-
-
-    // 지도위에 마커 그림
-    const [info, setInfo] = useState()
-    const [markers, setMarkers] = useState([])
-    const [map, setMap] = useState()
-
-
-
-    // 사이드바의 검색을 통해 맵 이동
+    const [subTitle, setSubtitle] = useState([]);
     const [InputText, setInputText] = useState('')
-    const [Place, setPlace] = useState('')
-
-    // 검색창 입력 반응
-    const onChange = (e) => {
-        setInputText(e.target.value)
-    }
-
-    // 검색창 Submit 을 통한 Place State 관리
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        setPlace(InputText)
-        console.log("sidebar : " + InputText)
-        setInputText('')
-    }
-
-
-
-    // Sub-Section 열고 닫는것을 관리 (Toggle 기능)
+    const [Place, setPlace] = useState("경기도")
     const [isOpen, setMenu] = useState(false); // subMenu, default false
 
-    // subTitle 재클릭시 닫는 기능
+    //멈춰
     const [toggle, setToggle] = useState(0);
 
     // Sub-Section 개별 실행 state
     const [flagNumber, setFlagNumber] = useState(0);
 
-    // Sub-Section 재클릭시 닫는 기능을 수행하는 Function
     const toggleMenu = (checked_id) => {
+
         if (toggle == checked_id) {
             setToggle(checked_id);
             setMenu(isOpen => !isOpen);
@@ -56,18 +30,24 @@ function Sidebar() {
             setToggle(checked_id);
             setMenu(isOpen => !isOpen); // on,off Boolean 개념
         }
+
     };
 
-
-
-    // Sub-Section 강제로 숨기는 기능
     const hideMenu = () => {
         setMenu(() => false)
     }
 
+    const onChange = (e) => {
+        setInputText(e.target.value)
+    }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setPlace(InputText)
+        console.log("sidebar : " + InputText)
+        setInputText('')
+    }
 
-    // LocalInfra -  cur_Universe - bySeries
     const bySeries = [
         {label: "인문계열", value: 1},
         {label: "사회계열", value: 2},
@@ -78,52 +58,11 @@ function Sidebar() {
         {label: "예체능계열", value: 7},
     ];
 
-
-
-    // PostgreSQL 에서 가져온 값을 state 로 관리
-    const [subTitle, setSubtitle] = useState([]);
-
     useEffect(() => {
         axios.get('/api/page')
             .then(response => setSubtitle(response.data))
             .catch(error => console.log(error));
     }, []);
-
-
-
-    // 지도 검색
-    useEffect(() => {
-        if (!map) return
-        const ps = new kakao.maps.services.Places()
-
-        ps.keywordSearch(Place, (data, status, _pagination) => {
-            if (status === kakao.maps.services.Status.OK) {
-                // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-                // LatLngBounds 객체에 좌표를 추가합니다
-                const bounds = new kakao.maps.LatLngBounds()
-                let markers = []
-
-                for (var i = 0; i < data.length; i++) {
-                    // @ts-ignore
-                    markers.push({
-                        position: {
-                            lat: data[i].y,
-                            lng: data[i].x,
-                        },
-                        content: data[i].place_name,
-                    })
-                    // @ts-ignore
-                    bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x))
-                }
-                setMarkers(markers)
-
-                // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-                map.setBounds(bounds)
-            }
-        })
-    }, [Place])
-
-
 
     return (
         <div>
@@ -224,13 +163,20 @@ function Sidebar() {
                                         </li>
 
                                         <li>
-
                                             <Select className="dropdown_items"
                                                     isSearchable={false}
                                                     placeholder={"계열별"}
                                                     options={bySeries}
                                             />
-
+                                            {/*<select>
+                                                <option value={"humanities"}>인문계열</option>
+                                                <option value={"society"}>사회계열</option>
+                                                <option value={"education"}>교육계열</option>
+                                                <option value={"engineering"}>공학계열</option>
+                                                <option value={"nature"}>자연계열</option>
+                                                <option value={"medication"}>의약계열</option>
+                                                <option value={"artMusicPhysical"}>예체능계열</option>
+                                            </select>*/}
                                         </li>
 
                                     </ul>
@@ -292,38 +238,8 @@ function Sidebar() {
                 </form>
             </nav>
 
-            {/*<MapContainer searchPlace={Place}/>*/}
+            <MapContainer searchPlace={Place}/>
 
-            <Map // 지도를 표시할 Container
-                center={{
-                    // 지도의 중심좌표
-                    lat : 37.48048629785744,
-                    lng : 126.89286416497653,
-                }}
-                style={{
-                    // 지도의 크기
-                    width: "100%",
-                    height: "100vh",
-                }}
-                level={2} // 지도의 확대 레벨
-                onCreate={setMap}
-            >
-                {markers.map((marker) => (
-                    <MapMarker
-                        key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
-                        position={marker.position}
-                        onClick={() => setInfo(marker)}
-                    >
-                        {info &&info.content === marker.content && (
-                            <div style={{color:"#000"}}>{marker.content}</div>
-                        )}
-                    </MapMarker>
-                ))}
-
-                <ZoomControl position={kakao.maps.ControlPosition.TOPRIGHT}/>
-                <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT}/>
-
-            </Map>
         </div>
     );
 }
