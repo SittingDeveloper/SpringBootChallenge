@@ -7,8 +7,6 @@ import {Map, MapMarker, MarkerClusterer} from "react-kakao-maps-sdk";
 
 function Sidebar() {
 
-
-
     // 지도 View, Sky View 전환 기능
     const mapRef = useRef()
     const setMapType = (maptype) => {
@@ -335,6 +333,11 @@ function Sidebar() {
                 ref={mapRef}
             >
 
+                <MarkerClusterer
+                    averageCenter={true}
+                    minLevel={10}
+                >
+
                 {/* 맵 마커 */}
                 {markers.map((marker) => (
                     <MapMarker
@@ -347,6 +350,7 @@ function Sidebar() {
                         )}
                     </MapMarker>
                 ))}
+                </MarkerClusterer>
 
 
 
