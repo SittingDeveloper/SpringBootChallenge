@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import './Sidebar.css';
+import './GIS.css';
 // import '../SearchPlace/LandingPage';
 import MapContainer from "../SearchPlace/MapContainer";
 import axios from "axios";

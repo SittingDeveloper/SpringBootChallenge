@@ -1,0 +1,260 @@
+#main_sidebar {
+    border-right: 1px solid grey;
+    z-index: 2;
+    position: fixed;
+    width: 300px;
+    height: 100%;
+    left: 0px;
+    overflow-y: auto;
+    background: #1b1b26;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    -ms-overflow-style: none;
+}
+
+#main_sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+#main_sidebar .sidebar-header a {
+    color: #fff;
+    display: block;
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 0px;
+    padding: 5px 0px;
+}
+
+#main_sidebar .sidebar-header {
+    background-color: #1b1b26;
+    font-size: 20px;
+    line-height: 52px;
+    text-align: center;
+}
+
+#main_sidebar ul li a {
+    padding: 15px 18px;
+    font-size: 17px;
+    display: block;
+    color: #c0c0c0;
+    border-bottom: 1px solid #9f9f9f;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+#main_sidebar ul li a:hover {
+    color: #00abff;
+    background: #000000;
+}
+
+#main_sidebar ul ul a {
+    text-align: right;
+    font-size: 15px !important;
+    padding: 10px 13px !important;
+    background: #2f2f3f;
+}
+
+a.dropdown-toggle.collapsed.dropdown-toggle::after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    vertical-align: 5px;
+    content: "";
+
+    border-bottom: 5px solid;
+    border-right: 5px solid transparent;
+    border-top: 0;
+
+    float: right;
+    margin-top: 10px;
+}
+
+#main_sidebar .dropdown-toggle::after {
+    float: right;
+    margin-top: 10px;
+}
+
+#main_sidebar .icon {
+    float: left;
+    margin-left: 30px;
+}
+
+#main_sidebar input, input:focus {
+    background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
+    background-position: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+
+
+    border: none;
+    border-radius: 2pt;
+    box-shadow: 0 0 0 1pt grey;
+    outline: none;
+    transition: .1s;
+}
+
+#main_sidebar ul li #infraSubmenu li div h5 {
+    padding: 20px 10px;
+    display: block;
+    background-color: #006d9f;
+
+}
+
+#main_sidebar ul li #infraSubmenu li div ul li {
+    text-align: left;
+    padding: 15px 18px;
+    font-size: 17px;
+    display: block;
+    /*border-bottom: 1px solid black;*/
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+#main_sidebar ul li #infraSubmenu li div ul li:nth-child(2n) {
+    text-align: left;
+    padding: 15px 18px;
+    font-size: 17px;
+    display: block;
+    /*border-bottom: 1px solid black;*/
+    background-color: #2f2f3f;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+/*버튼 중앙으로 정렬*/
+.middle-button {
+    text-align: center;
+    padding: 10px 10px;
+}
+
+/* li 점, padding 없애는 구문 */
+#main_sidebar ul li #infraSubmenu li div ul {
+    padding-left: 0px;
+    list-style: none;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.show-menu {
+    z-index: 2;
+    position: fixed;
+    top: 0px;
+    width: 300px;
+    height: auto;
+    left: 300px;
+    overflow-y: auto;
+    background: #1b1b26;
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+    color: white;
+    border: 1px solid grey;
+    -ms-overflow-style: none;
+    overflow: visible;
+}
+
+.show-menu::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-menu {
+    /*width: 376px;
+    height: 500px;
+    position: fixed;
+    left: -376px;
+    transition: 1s;*/
+    z-index: 2;
+    position: fixed;
+    top: 0px;
+    width: 300px;
+    height: auto;
+    left: -300px;
+    overflow-y: auto;
+    background: #1b1b26;
+    /*-webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;*/
+}
+
+.doubleButton {
+    display: inline-block;
+    font-weight: 1000;
+    width: 110px;
+    height: 40px;
+    color: black;
+    background-color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    /*box-shadow: 0 4px 16px rgba(0, 79, 255, 0.3);*/
+}
+
+.tripleButton {
+    display: inline-block;
+    font-weight: 1000;
+    width: 70px;
+    height: 40px;
+    color: black;
+    background-color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    /*box-shadow: 0 4px 16px rgba(0, 79, 255, 0.3);*/
+}
+
+button:focus {
+    outline: 0;
+}
+
+button:hover {
+    animation-name: fadeIn;
+    animation-duration: 0.4s;
+    color: white;
+    background: rgb(255, 7, 7);
+    cursor: pointer;
+    /*box-shadow: 0 2px 4px rgba(0, 79, 255, 0.6);*/
+}
+
+/* 버튼 사이 간격 */
+button + button {
+    margin-left: 10px;
+}
+
+.dropdown_items {
+    color: black;
+}
+
+/*style={{zIndex:1, position:"absolute", top:5 , right:5, border:1}}*/
+
+.radius_border{border:1px solid #919191;border-radius:5px;}
+.custom_typecontrol {position:absolute;top:10px;right:10px;overflow:hidden;width:200px;height:50px;margin:0;padding:0;z-index:1;font-family:'Malgun Gothic', '맑은 고딕', sans-serif;}
+.custom_typecontrol span {display:block;width:65px;height:30px;float:left;text-align:center;line-height:30px;cursor:pointer;}
+.custom_typecontrol .btn {background:#fff;background:linear-gradient(#fff,  #e6e6e6); margin: 0; padding: 0;font-size: 17px;font-weight: bold; line-height: 46px; width: 50%; height: 100%;}
+.custom_typecontrol .btn:hover {background:#f5f5f5;background:linear-gradient(#f5f5f5,#e3e3e3);}
+.custom_typecontrol .btn:active {background:#e6e6e6;background:linear-gradient(#e6e6e6, #fff);}
+.custom_typecontrol .selected_btn {color:#fff;background:#425470;background:linear-gradient(#425470, #5b6d8a);font-size:17px;font-weight: bold; line-height: 46px; width: 50%; height: 100%}
+.custom_typecontrol .selected_btn:hover {color:#fff;}
+
+.custom_zoomcontrol {position:absolute;top:70px;right:10px;width:50px;height:94px;overflow:hidden;z-index:1;background-color:#f5f5f5; line-height: 40px}
+.custom_zoomcontrol span {display:block;width:50px;height:45px;text-align:center;cursor:pointer;}
+/*.custom_zoomcontrol span img {width:15px;height:15px;padding:12px 0;border:none;}*/
+.custom_zoomcontrol span img {width:15px;height:15px;border:none;}
+.custom_zoomcontrol span:first-child{border-bottom:1px solid #bfbfbf;}
+
+.MainStatus {
+    background-color: rgb(23, 23, 23);
+    width: 100%;
+    height: 100vh;
+}

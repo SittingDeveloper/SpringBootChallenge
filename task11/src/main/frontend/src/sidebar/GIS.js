@@ -1,11 +1,21 @@
 /*global kakao*/
 import React, {useEffect, useRef, useState} from 'react';
-import './Sidebar.css';
+import './GIS.css';
 import axios from "axios";
 import Select from "react-select";
 import {Map, MapMarker, MarkerClusterer, Polygon} from "react-kakao-maps-sdk";
 
-function Sidebar() {
+function GIS() {
+
+
+    /*useEffect(()=> {
+        console.log('kakao')
+        let map = document.getElementById("kakaoMap");
+        let subMap = map.querySelector("svg");
+        subMap.style.background = 'black';
+    },[])*/
+
+
 
     // 지도 View, Sky View 전환 기능
     const mapRef = useRef()
@@ -146,7 +156,7 @@ function Sidebar() {
     }, [Place])
 
 
-    // lat, lng part
+    /*// lat, lng part
     const Yeoncheon = [
         { lat : 38.241652167846698 , lng : 127.14734021448261 } ,
         { lat : 38.24234375495036 , lng : 127.14892257032337 } ,
@@ -281,9 +291,8 @@ function Sidebar() {
         { lng : 127.12405512091068, lat : 37.77295949399783 }
     ]
 
-
     const [isYeoncheonMouseOver, setYeoncheonIsMouseOver] = useState(false);
-    const [isPocheonMouseOver, setPocheonIsMouseOver] = useState(false);
+    const [isPocheonMouseOver, setPocheonIsMouseOver] = useState(false);*/
 
 
     const [downCount, setDownCount] = useState(0);
@@ -469,13 +478,15 @@ function Sidebar() {
                     // 지도의 크기
                     width: "100%",
                     height: "100vh",
-                    // opacity: 0
+
                 }}
+                className={"map-view"}
                 level={2} // 지도의 확대 레벨
                 onCreate={setMap}
                 ref={mapRef}
+                id={"kakaoMap"}
             >
-                <Polygon
+                {/*<Polygon
                     path={Yeoncheon}
                     strokeWeight={3} // 선의 두께입니다
                     strokeColor={"#89a8e5"} // 선의 색깔입니다
@@ -489,7 +500,6 @@ function Sidebar() {
                         console.log(" 클릭이벤트1 " + mouseEvent)
                         setDownCount(downCount + 1)
                     }}
-
                 />
 
                 <Polygon
@@ -506,7 +516,7 @@ function Sidebar() {
                         console.log(" 클릭이벤트2 " + mouseEvent)
                         setDownCount(downCount + 1)
                     }}
-                />
+                />*/}
 
 
                 <MarkerClusterer
@@ -579,4 +589,4 @@ function Sidebar() {
     );
 }
 
-export default Sidebar;
+export default GIS;

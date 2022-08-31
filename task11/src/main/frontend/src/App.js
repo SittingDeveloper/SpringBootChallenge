@@ -1,18 +1,32 @@
 import './App.css';
-import Sidebar from "./sidebar/Sidebar";
-import Map from "./map/Map";
-import LandingPage from "./SearchPlace/LandingPage";
-import MapContainer from "./SearchPlace/MapContainer";
+import GIS from "./sidebar/GIS";
+import Main from "./dashBoard/Main";
+import {
+    BrowserRouter,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 
 function App() {
-  return (
-    <div className="App">
-        <Sidebar/>
-        {/*<LandingPage/>*/}
-        {/*<Map/>*/}
-        {/*<MapContainer/>*/}
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Switch>
+                <div className="App">
+
+                    <Route exact path="/">
+                        <Main/>
+                    </Route>
+
+                    <Route path="/gis">
+                        <GIS/>
+                    </Route>
+
+                </div>
+            </Switch>
+
+        </BrowserRouter>
+    );
 }
 
 export default App;
