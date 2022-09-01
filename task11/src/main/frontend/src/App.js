@@ -1,6 +1,6 @@
 import './App.css';
 import GIS from "./sidebar/GIS";
-import Main from "./dashBoard/Main";
+import Main from "./dashBoard/Main_Title";
 import {
     BrowserRouter,
     Switch,
