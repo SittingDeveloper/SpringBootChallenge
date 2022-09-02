@@ -12,17 +12,19 @@ function App() {
     return (
         <BrowserRouter>
             <Switch>
-                <div className="App">
+                <>
+                    <div className="App">
 
-                    <Route exact path="/">
-                        <Main/>
-                    </Route>
+                        <Route exact path="/">
+                            <Main/>
+                        </Route>
 
-                    <Route path="/gis">
-                        <GIS/>
-                    </Route>
+                        <Route path="/gis">
+                            <GIS/>
+                        </Route>
 
-                </div>
+                    </div>
+                </>
             </Switch>
 
         </BrowserRouter>
