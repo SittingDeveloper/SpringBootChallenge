@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import './Main_Title.css';
 import axios from "axios";
 import Select from "react-select";
-import {Map, Polygon} from "react-kakao-maps-sdk";
+import {CustomOverlayMap, Map, MapInfoWindow, Polygon} from "react-kakao-maps-sdk";
 import {
     map_Ansan,
     map_Anseon,
@@ -48,12 +48,10 @@ function Main_Title() {
         }
     };
 
-
     // Sub-Section 강제로 숨기는 기능
     const hideMenu = () => {
         setMenu(() => false)
     }
-
 
     // LocalInfra -  cur_Universe - bySeries
     const bySeries = [
@@ -66,7 +64,6 @@ function Main_Title() {
         {label: "예체능계열", value: 7},
     ];
 
-
     // PostgreSQL 에서 가져온 값을 state 로 관리
     const [subTitle, setSubtitle] = useState([]);
 
@@ -76,8 +73,7 @@ function Main_Title() {
             .catch(error => console.log(error));
     }, []);
 
-
-    // /*// lat, lng part
+    // 지역별 위도경도 배열
     const [areas, setAreas] = useState([
         {
             name: "연천",
@@ -236,37 +232,14 @@ function Main_Title() {
         }
     ])
 
-    const [isYeoncheonMouseOver, setYeoncheonIsMouseOver] = useState(false);
-    const [isPocheonMouseOver, setPocheonIsMouseOver] = useState(false);
-    const [isGapayeonMouseOver, setGapyeonIsMouseOver] = useState(false);
-    const [isYangpyeonMouseOver, setYangpyeonIsMouseOver] = useState(false);
-    const [isYeojuMouseOver, setYeojuIsMouseOver] = useState(false);
-    const [isIcheonMouseOver, setIcheonMouseOver] = useState(false);
-    const [isYonginMouseOver, setYonginMouseOver] = useState(false);
-    const [isAnseonMouseOver, setAnseonMouseOver] = useState(false);
-    const [isPyeongtaekMouseOver, setPyeongMouseOver] = useState(false);
-    const [isHwaseonMouseOver, setHwaseonMouseOver] = useState(false);
-    const [isAnsanMouseOver, setAnsanMouseOver] = useState(false);
-    const [isAnyanMouseOver, setAnyanMouseOver] = useState(false);
-    const [isGunpoMouseOver, setGunpoMouseOver] = useState(false);
-    const [isGwacheonMouseOver, setGwacheonMouseOver] = useState(false);
-    const [isUiwangMouseOver, setUiwangMouseOver] = useState(false);
-    const [isSuwonMouseOver, setSuwonMouseOver] = useState(false);
-    const [isGuriMouseOver, setGuriMouseOver] = useState(false);
-    const [isSeongnamMouseOver, setSeongnamMouseOver] = useState(false);
-    const [isGwangjuMouseOver, setGwanjuMouseOver] = useState(false);
-    const [isHanamMouseOver, setHanamMouseOver] = useState(false);
-    const [isGwangmyeongMouseOver, setGwangmyeongMouseOver] = useState(false);
-    const [isBucheonMouseOver, setBucheonMouseOver] = useState(false);
-    const [isSiheungMouseOver, setSiheungMouseOver] = useState(false);
-    const [isOsanMouseOver, setOsanMouseOver] = useState(false);
-    const [isDongducheonMouseOver, setDongducheonMouseOver] = useState(false);
-    const [isPajuMouseOver, setPajuMouseOver] = useState(false);
-    const [isYangjuMouseOver, setYangjuMouseOver] = useState(false);
-    const [isGimpoMouseOver, setGimpoMouseOver] = useState(false);
-    const [isGoyangMouseOver, setGoyangMouseOver] = useState(false);
-    const [isUijeonbuMouseOver, setUijeongbuMouseOver] = useState(false);
-    const [isNamyangjuMouseOver, setNamyangjuMouseOver] = useState(false);
+    // Map Hover 지역명 나타내기
+    const [mousePosition, setMousePosition] = useState({
+        lat : 0,
+        lng : 0,
+    })
+
+
+    const [clickedArea, setClickedArea] = useState();
 
     const [downCount, setDownCount] = useState(0);
     const [textPlace, setTextPlace] = useState("");
@@ -465,7 +438,7 @@ function Main_Title() {
                         style={{
                             width: "450px",
                             height: "45vh",
-                            left: "25px"
+                            left: "28px"
                         }}
                         draggable={false}
                         zoomable={false}
@@ -473,591 +446,62 @@ function Main_Title() {
                         disableDoubleClick={true}
                         level={11.8} // 지도의 확대 레벨
                         onCreate={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
+                        onMouseMove={(_map, mouseEvent) =>
+                            setMousePosition({
+                                lat: mouseEvent.latLng.getLat(),
+                                lng: mouseEvent.latLng.getLng(),
+                            })
+                        }
                     >
 
-                        <Polygon
-                            path={Yeoncheon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isYeoncheonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isYeoncheonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setYeoncheonIsMouseOver(true)}
-                            onMouseout={() => setYeoncheonIsMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트1 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("연천 Click");
-                            }}
-                        />
+                        {areas.map((area, index) => (
+                            <Polygon
+                                key={`area-${area.name}`}
+                                path={area.path}
+                                strokeWeight={2}
+                                strokeColor={"#000000"}
+                                strokeOpacity={0.8}
+                                fillColor={area.isMouseover ? "#4394ff" : "rgb(137,162,175)"}
+                                fillOpacity={0.8}
+                                onMouseover={() =>
+                                    setAreas((prev) => [
+                                        ...prev.filter((_, i) => i !== index),
+                                        {
+                                            ...prev[index],
+                                            isMouseover: true,
+                                        },
+                                    ])
+                                }
+                                onMouseout={() =>
+                                    setAreas((prev) => [
+                                        ...prev.filter((_, i) => i !== index),
+                                        {
+                                            ...prev[index],
+                                            isMouseover: false,
+                                        },
+                                    ])
+                                }
 
-                        <Polygon
-                            path={Pocheon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isPocheonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isPocheonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setPocheonIsMouseOver(true)}
-                            onMouseout={() => setPocheonIsMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("포천 Click");
-                            }}
-                        />
+                                onMousedown={() => {
+                                    setTextPlace(area.name);
+                                }}
 
-                        <Polygon
-                            path={Gapyeon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isGapayeonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isGapayeonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setGapyeonIsMouseOver(true)}
-                            onMouseout={() => setGapyeonIsMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("가평 Click");
-                            }}
-                        />
+                            />
+                        ))}
 
-                        <Polygon
-                            path={Yangpyeon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isYangpyeonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isYangpyeonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setYangpyeonIsMouseOver(true)}
-                            onMouseout={() => setYangpyeonIsMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("양평 Click");
-                            }}
-                        />
+                        {areas.findIndex((v) => v.isMouseover) !== -1 && (
+                            <CustomOverlayMap position={mousePosition}>
+                                <div className="area">{areas.find((v) => v.isMouseover).name}</div>
+                            </CustomOverlayMap>
+                        )}
 
-                        <Polygon
-                            path={Yeoju}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isYeojuMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isYeojuMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setYeojuIsMouseOver(true)}
-                            onMouseout={() => setYeojuIsMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("여주 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Icheon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isIcheonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isIcheonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setIcheonMouseOver(true)}
-                            onMouseout={() => setIcheonMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("이천 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Yongin}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isYonginMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isYonginMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setYonginMouseOver(true)}
-                            onMouseout={() => setYonginMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("용인 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Yongin_2}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isYonginMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isYonginMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setYonginMouseOver(true)}
-                            onMouseout={() => setYonginMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("용인 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Yongin_3}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isYonginMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isYonginMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setYonginMouseOver(true)}
-                            onMouseout={() => setYonginMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("용인 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Anseon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isAnseonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isAnseonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setAnseonMouseOver(true)}
-                            onMouseout={() => setAnseonMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("안성 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Pyeongtaek}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isPyeongtaekMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isPyeongtaekMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setPyeongMouseOver(true)}
-                            onMouseout={() => setPyeongMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("평택 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Hwaseon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isHwaseonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isHwaseonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setHwaseonMouseOver(true)}
-                            onMouseout={() => setHwaseonMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("화성 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Ansan}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isAnsanMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isAnsanMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setAnsanMouseOver(true)}
-                            onMouseout={() => setAnsanMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("안산 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Ansan_2}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isAnsanMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isAnsanMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setAnsanMouseOver(true)}
-                            onMouseout={() => setAnsanMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("안산 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={AnYan}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isAnyanMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isAnyanMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setAnyanMouseOver(true)}
-                            onMouseout={() => setAnyanMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("안양 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Gunpo}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isGunpoMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isGunpoMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setGunpoMouseOver(true)}
-                            onMouseout={() => setGunpoMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("군포 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Gwacheon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isGwacheonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isGwacheonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setGwacheonMouseOver(true)}
-                            onMouseout={() => setGwacheonMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("과천 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Uiwang}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isUiwangMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isUiwangMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setUiwangMouseOver(true)}
-                            onMouseout={() => setUiwangMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("의왕 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Suwon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isSuwonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isSuwonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setSuwonMouseOver(true)}
-                            onMouseout={() => setSuwonMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("수원 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Guri}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isGuriMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isGuriMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setGuriMouseOver(true)}
-                            onMouseout={() => setGuriMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("구리 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={SeongNam}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isSeongnamMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isSeongnamMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setSeongnamMouseOver(true)}
-                            onMouseout={() => setSeongnamMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("성남 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Gwangju}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isGwangjuMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isGwangjuMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setGwanjuMouseOver(true)}
-                            onMouseout={() => setGwanjuMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("광주 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Hanam}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isHanamMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isHanamMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setHanamMouseOver(true)}
-                            onMouseout={() => setHanamMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("하남 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Gwangmyeong}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isGwangmyeongMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isGwangmyeongMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setGwangmyeongMouseOver(true)}
-                            onMouseout={() => setGwangmyeongMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("광명 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Bucheon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isBucheonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isBucheonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setBucheonMouseOver(true)}
-                            onMouseout={() => setBucheonMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("부천 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Siheung}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isSiheungMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isSiheungMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setSiheungMouseOver(true)}
-                            onMouseout={() => setSiheungMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("시흥 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Osan}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isOsanMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isOsanMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setOsanMouseOver(true)}
-                            onMouseout={() => setOsanMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("오산 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Dongducheon}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isDongducheonMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isDongducheonMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setDongducheonMouseOver(true)}
-                            onMouseout={() => setDongducheonMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("동두천 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Paju}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isPajuMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isPajuMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setPajuMouseOver(true)}
-                            onMouseout={() => setPajuMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("파주 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Yangju}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isYangjuMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isYangjuMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setYangjuMouseOver(true)}
-                            onMouseout={() => setYangjuMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("양주 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Gimpo}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isGimpoMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isGimpoMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setGimpoMouseOver(true)}
-                            onMouseout={() => setGimpoMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("김포 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Goyang}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isGoyangMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isGoyangMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setGoyangMouseOver(true)}
-                            onMouseout={() => setGoyangMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("고양 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Uijeonbu}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isUijeonbuMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isUijeonbuMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setUijeongbuMouseOver(true)}
-                            onMouseout={() => setUijeongbuMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("의정부 Click");
-                            }}
-                        />
-
-                        <Polygon
-                            path={Namyangju}
-                            strokeWeight={2} // 선의 두께입니다
-                            strokeColor={"#000000"} // 선의 색깔입니다
-                            strokeOpacity={0.8} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
-                            fillColor={isNamyangjuMouseOver ? "#89a8e5" : "rgb(137,162,175)"} // 채우기 색깔입니다
-                            fillOpacity={isNamyangjuMouseOver ? 0.8 : 0.7} // 채우기 불투명도입니다
-                            onMouseover={() => setNamyangjuMouseOver(true)}
-                            onMouseout={() => setNamyangjuMouseOver(false)}
-                            onMousedown={(_polygon, mouseEvent) => {
-                                console.log(" 클릭이벤트2 " + mouseEvent)
-                                setDownCount(downCount + 1)
-                                setTextPlace("남양주 Click");
-                            }}
-                        />
 
                         <h1 style={{
                             color: "rgb(233,233,233)"
                         }}>
                             {textPlace}
                         </h1>
+
 
                     </Map>
                 </div>
