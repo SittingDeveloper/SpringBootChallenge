@@ -238,10 +238,6 @@ function Main_Title() {
         lng : 0,
     })
 
-
-    const [clickedArea, setClickedArea] = useState();
-
-    const [downCount, setDownCount] = useState(0);
     const [textPlace, setTextPlace] = useState("");
 
     useEffect(() => {
@@ -250,14 +246,9 @@ function Main_Title() {
             height: 256,
             getTile: (x, y, z) => {
                 const div = document.createElement('div');
-                // div.style.fontSize = '36px';
-                // div.style.fontWeight = 'bold';
-                // div.style.lineHeight = '256px'
-                // div.style.textAlign = 'center';
-                // div.style.color = '#4D4D4D';
-                // div.style.border = '1px dashed #ff5050';
+
+                // GIS맵  배경이미지
                 div.style.background = "rgb(0,0,0)";
-                // div.style.background = "grey";
                 return div;
             }
         })
@@ -423,10 +414,11 @@ function Main_Title() {
                     backgroundColor: "rgb(0, 0, 0)",
                     position: "absolute",
                     borderRadius: "20px",
-                    top: "110px",
+                    top: "100px",
                     left: "350px",
                     width: "500px",
-                    height: "820px"
+                    height: "915px",
+                    overflow: "hidden"
                 }}>
 
 
@@ -436,15 +428,15 @@ function Main_Title() {
                             lng: 127.14015019063882,
                         }}
                         style={{
-                            width: "450px",
+                            left: "5px",
+                            width: "490px",
                             height: "45vh",
-                            left: "28px"
                         }}
                         draggable={false}
                         zoomable={false}
                         disableDoubleClickZoom={true}
                         disableDoubleClick={true}
-                        level={11.8} // 지도의 확대 레벨
+                        level={11.5} // 지도의 확대 레벨
                         onCreate={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
                         onMouseMove={(_map, mouseEvent) =>
                             setMousePosition({
@@ -495,12 +487,11 @@ function Main_Title() {
                             </CustomOverlayMap>
                         )}
 
-
-                        <h1 style={{
-                            color: "rgb(233,233,233)"
-                        }}>
-                            {textPlace}
-                        </h1>
+                        <div className="Gis_detail">
+                            <h1>
+                                {textPlace}
+                            </h1>
+                        </div>
 
 
                     </Map>

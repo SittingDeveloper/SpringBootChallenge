@@ -259,6 +259,13 @@ button + button {
     height: 100vh;
 }
 
+.Gis_detail {
+    height: 45%;
+    background-color: rgb(255, 255, 255);
+    color: rgb(200, 200, 200);
+
+}
+
 .area {
     position: absolute;
     background: #fff;
