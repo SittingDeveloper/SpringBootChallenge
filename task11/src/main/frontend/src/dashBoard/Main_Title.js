@@ -5,13 +5,22 @@ import axios from "axios";
 import Select from "react-select";
 import {Map, Polygon} from "react-kakao-maps-sdk";
 import {
-    map_Yeoncheon, map_Pocheon, map_Gapyeon, map_Yangpyeon,
-    map_Yeoju, map_Icheon, map_Yongin, map_Yongin_2, map_Yongin_3,
-    map_Anseon, map_Pyeongtaek, map_Hwaseon, map_Ansan, map_Ansan_2,
-    map_AnYan, map_Gunpo, map_Gwacheon, map_Uiwang, map_Suwon, map_Guri,
-    map_SeongNam, map_Gwangju, map_Hanam, map_Gwangmyeong, map_Bucheon, map_Siheung,
-    map_Osan, map_Dongducheon, map_Paju, map_Yangju, map_Gimpo, map_Goyang,
-    map_Uijeonbu, map_Namyangju
+    map_Ansan,
+    map_Anseon,
+    map_AnYan, map_Bucheon, map_Dongducheon,
+    map_Gapyeon, map_Gimpo, map_Goyang,
+    map_Gunpo, map_Guri, map_Gwangju, map_Gwangmyeong, map_Hanam,
+    map_Hwaseon,
+    map_Icheon, map_Namyangju, map_Osan, map_Paju,
+    map_Pocheon,
+    map_Pyeongtaek,
+    map_SeongNam, map_Siheung,
+    map_Suwon, map_Uijeonbu,
+    map_Uiwang, map_Yangju,
+    map_Yangpyeon,
+    map_Yeoju,
+    map_Yeoncheon,
+    map_Yongin
 } from "./latitude";
 
 function Main_Title() {
@@ -69,40 +78,163 @@ function Main_Title() {
 
 
     // /*// lat, lng part
-    const Yeoncheon = map_Yeoncheon
-    const Pocheon = map_Pocheon
-    const Gapyeon = map_Gapyeon
-    const Yangpyeon = map_Yangpyeon
-    const Yeoju = map_Yeoju
-    const Icheon = map_Icheon
-    const Yongin = map_Yongin // 기흥구
-    const Yongin_2 = map_Yongin_2 // 수지구
-    const Yongin_3 = map_Yongin_3 // 처인구
-    const Anseon = map_Anseon
-    const Pyeongtaek = map_Pyeongtaek
-    const Hwaseon = map_Hwaseon
-    const Ansan = map_Ansan // 상록구
-    const Ansan_2 = map_Ansan_2 // 단원구
-    const AnYan = map_AnYan
-    const Gunpo = map_Gunpo
-    const Gwacheon = map_Gwacheon
-    const Uiwang = map_Uiwang
-    const Suwon = map_Suwon
-    const Guri = map_Guri
-    const SeongNam = map_SeongNam
-    const Gwangju = map_Gwangju
-    const Hanam = map_Hanam
-    const Gwangmyeong = map_Gwangmyeong
-    const Bucheon = map_Bucheon
-    const Siheung = map_Siheung
-    const Osan = map_Osan
-    const Dongducheon = map_Dongducheon
-    const Paju = map_Paju
-    const Yangju = map_Yangju
-    const Gimpo = map_Gimpo
-    const Goyang = map_Goyang
-    const Uijeonbu = map_Uijeonbu
-    const Namyangju = map_Namyangju
+    const [areas, setAreas] = useState([
+        {
+            name: "연천",
+            isMouseOver: false,
+            path: map_Yeoncheon
+        },
+        {
+            name: "포천",
+            isMouseOver: false,
+            path: map_Pocheon
+        },
+        {
+            name: "가평",
+            isMouseOver: false,
+            path: map_Gapyeon
+        },
+        {
+            name: "양평",
+            isMouseOver: false,
+            path: map_Yangpyeon
+        },
+        {
+            name: "여주",
+            isMouseOver: false,
+            path: map_Yeoju
+        },
+        {
+            name: "이천",
+            isMouseOver: false,
+            path: map_Icheon
+        },
+        {
+            name: "용인",
+            isMouseOver: false,
+            path: map_Yongin
+        },
+        {
+            name: "안성",
+            isMouseOver: false,
+            path: map_Anseon
+        },
+        {
+            name: "평택",
+            isMouseOver: false,
+            path: map_Pyeongtaek
+        },
+        {
+            name: "화성",
+            isMouseOver: false,
+            path: map_Hwaseon
+        },
+        {
+            name: "안산",
+            isMouseOver: false,
+            path: map_Ansan
+        },
+        {
+            name: "안양",
+            isMouseOver: false,
+            path: map_AnYan
+        },
+        {
+            name: "군포",
+            isMouseOver: false,
+            path: map_Gunpo
+        },
+        {
+            name: "과천",
+            isMouseOver: false,
+            path: map_Gunpo
+        },
+        {
+            name: "의왕",
+            isMouseOver: false,
+            path: map_Uiwang
+        },
+        {
+            name: "수원",
+            isMouseOver: false,
+            path: map_Suwon
+        },
+        {
+            name: "구리",
+            isMouseOver: false,
+            path: map_Guri
+        },
+        {
+            name: "성남",
+            isMouseOver: false,
+            path: map_SeongNam
+        },
+        {
+            name: "광주",
+            isMouseOver: false,
+            path: map_Gwangju
+        },
+        {
+            name: "하남",
+            isMouseOver: false,
+            path: map_Hanam
+        },
+        {
+            name: "광명",
+            isMouseOver: false,
+            path: map_Gwangmyeong
+        },
+        {
+            name: "부천",
+            isMouseOver: false,
+            path: map_Bucheon
+        },
+        {
+            name: "시흥",
+            isMouseOver: false,
+            path: map_Siheung
+        },
+        {
+            name: "오산",
+            isMouseOver: false,
+            path: map_Osan
+        },
+        {
+            name: "동두천",
+            isMouseOver: false,
+            path: map_Dongducheon
+        },
+        {
+            name: "파주",
+            isMouseOver: false,
+            path: map_Paju
+        },
+        {
+            name: "양주",
+            isMouseOver: false,
+            path: map_Yangju
+        },
+        {
+            name: "김포",
+            isMouseOver: false,
+            path: map_Gimpo
+        },
+        {
+            name: "고양",
+            isMouseOver: false,
+            path: map_Goyang
+        },
+        {
+            name: "의정부",
+            isMouseOver: false,
+            path: map_Uijeonbu
+        },
+        {
+            name: "남양주",
+            isMouseOver: false,
+            path: map_Namyangju
+        }
+    ])
 
     const [isYeoncheonMouseOver, setYeoncheonIsMouseOver] = useState(false);
     const [isPocheonMouseOver, setPocheonIsMouseOver] = useState(false);
