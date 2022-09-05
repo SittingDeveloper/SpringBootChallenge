@@ -414,10 +414,10 @@ function Main_Title() {
                     backgroundColor: "rgb(0, 0, 0)",
                     position: "absolute",
                     borderRadius: "20px",
-                    top: "100px",
+                    top: "11.5%",
                     left: "350px",
                     width: "500px",
-                    height: "915px",
+                    height: "85%",
                     overflow: "hidden"
                 }}>
 

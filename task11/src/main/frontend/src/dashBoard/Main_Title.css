@@ -260,10 +260,7 @@ button + button {
 }
 
 .Gis_detail {
-    height: 45%;
-    background-color: rgb(255, 255, 255);
-    color: rgb(200, 200, 200);
-
+    color: rgb(233,233,233);
 }
 
 .area {
