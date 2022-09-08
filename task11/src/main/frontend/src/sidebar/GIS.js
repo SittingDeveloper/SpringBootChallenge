@@ -4,178 +4,8 @@ import './GIS.css';
 import axios from "axios";
 import Select from "react-select";
 import {CustomOverlayMap, Map, MapMarker, MarkerClusterer, Polygon} from "react-kakao-maps-sdk";
-import {
-    map_Ansan,
-    map_Anseon, map_AnYan, map_Bucheon, map_Dongducheon,
-    map_Gapyeon, map_Gimpo, map_Goyang, map_Gunpo, map_Guri, map_Gwangju, map_Gwangmyeong, map_Hanam, map_Hwaseon,
-    map_Icheon, map_Namyangju, map_Osan, map_Paju,
-    map_Pocheon, map_Pyeongtaek, map_SeongNam, map_Siheung, map_Suwon, map_Uijeonbu, map_Uiwang, map_Yangju,
-    map_Yangpyeon,
-    map_Yeoju,
-    map_Yeoncheon,
-    map_Yongin
-} from "../dashBoard/latitude";
 
 function GIS() {
-
-    // 지역별 위도경도 배열
-    const [areas, setAreas] = useState([
-        {
-            name: "연천",
-            isMouseOver: false,
-            path: map_Yeoncheon
-        },
-        {
-            name: "포천",
-            isMouseOver: false,
-            path: map_Pocheon
-        },
-        {
-            name: "가평",
-            isMouseOver: false,
-            path: map_Gapyeon
-        },
-        {
-            name: "양평",
-            isMouseOver: false,
-            path: map_Yangpyeon
-        },
-        {
-            name: "여주",
-            isMouseOver: false,
-            path: map_Yeoju
-        },
-        {
-            name: "이천",
-            isMouseOver: false,
-            path: map_Icheon
-        },
-        {
-            name: "용인",
-            isMouseOver: false,
-            path: map_Yongin
-        },
-        {
-            name: "안성",
-            isMouseOver: false,
-            path: map_Anseon
-        },
-        {
-            name: "평택",
-            isMouseOver: false,
-            path: map_Pyeongtaek
-        },
-        {
-            name: "화성",
-            isMouseOver: false,
-            path: map_Hwaseon
-        },
-        {
-            name: "안산",
-            isMouseOver: false,
-            path: map_Ansan
-        },
-        {
-            name: "안양",
-            isMouseOver: false,
-            path: map_AnYan
-        },
-        {
-            name: "군포",
-            isMouseOver: false,
-            path: map_Gunpo
-        },
-        {
-            name: "과천",
-            isMouseOver: false,
-            path: map_Gunpo
-        },
-        {
-            name: "의왕",
-            isMouseOver: false,
-            path: map_Uiwang
-        },
-        {
-            name: "수원",
-            isMouseOver: false,
-            path: map_Suwon
-        },
-        {
-            name: "구리",
-            isMouseOver: false,
-            path: map_Guri
-        },
-        {
-            name: "성남",
-            isMouseOver: false,
-            path: map_SeongNam
-        },
-        {
-            name: "광주",
-            isMouseOver: false,
-            path: map_Gwangju
-        },
-        {
-            name: "하남",
-            isMouseOver: false,
-            path: map_Hanam
-        },
-        {
-            name: "광명",
-            isMouseOver: false,
-            path: map_Gwangmyeong
-        },
-        {
-            name: "부천",
-            isMouseOver: false,
-            path: map_Bucheon
-        },
-        {
-            name: "시흥",
-            isMouseOver: false,
-            path: map_Siheung
-        },
-        {
-            name: "오산",
-            isMouseOver: false,
-            path: map_Osan
-        },
-        {
-            name: "동두천",
-            isMouseOver: false,
-            path: map_Dongducheon
-        },
-        {
-            name: "파주",
-            isMouseOver: false,
-            path: map_Paju
-        },
-        {
-            name: "양주",
-            isMouseOver: false,
-            path: map_Yangju
-        },
-        {
-            name: "김포",
-            isMouseOver: false,
-            path: map_Gimpo
-        },
-        {
-            name: "고양",
-            isMouseOver: false,
-            path: map_Goyang
-        },
-        {
-            name: "의정부",
-            isMouseOver: false,
-            path: map_Uijeonbu
-        },
-        {
-            name: "남양주",
-            isMouseOver: false,
-            path: map_Namyangju
-        }
-    ])
 
     // 지도 View, Sky View 전환 기능
     const mapRef = useRef()
@@ -489,12 +319,11 @@ function GIS() {
 
 
             {/*지도를 표시할 Container*/}
-
             <Map
                 center={{
                     // 지도의 중심좌표
-                    lat: 37.52167,
-                    lng: 126.98292,
+                    lat: 37.48048629785744,
+                    lng: 126.89286416497653,
                 }}
                 style={{
                     // 지도의 크기
@@ -503,52 +332,50 @@ function GIS() {
 
                 }}
                 className={"map-view"}
-                level={10} // 지도의 확대 레벨
+                level={2} // 지도의 확대 레벨
                 onCreate={setMap}
                 ref={mapRef}
                 id={"kakaoMap"}
-                maxLevel={11}
             >
-
-                {areas.map((area, index) => (
-                    <Polygon
-                        key={`area-${area.name}`}
-                        path={area.path}
-                        strokeWeight={2}
-                        strokeColor={"#005c86"}
-                        strokeOpacity={0.8}
-                        fillColor={"rgba(255,255,255,0.4)"}
-                        fillOpacity={0.8}
-                    />
-                ))}
 
                 <MarkerClusterer
                     averageCenter={true}
-                    minLevel={6}
+                    minLevel={10}
                 >
 
+                    {/* 맵 마커 */}
                     {markers.map((marker) => (
-                        <CustomOverlayMap
-                            position={{lat: marker.position.lat, lng: marker.position.lng}}
-                            yAnchor={0.7}
+                        <MapMarker
+                            key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+                            position={marker.position}
+                            onClick={() => setInfo(marker)}
                         >
-                            <div className="customoverlay">
-                                <a
-                                    // href="https://map.kakao.com/link/map/11394059"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <span className="areaName">{marker.content}</span>
-                                    <span className="data">input Database</span>
-                                    <span className="title">input title</span>
-                                </a>
-                            </div>
+                            {/*클릭한 마커*/}
+                            {/*{info && info.content === marker.content && (
+                                <div style={{color: "#00abff"}}>{marker.content}</div>
+                            )}*/}
 
-                        </CustomOverlayMap>
+                        </MapMarker>
                     ))}
-
                 </MarkerClusterer>
 
+                {markers.map((marker) => (
+                    <CustomOverlayMap
+                        position={{lat: marker.position.lat, lng: marker.position.lng}}
+                        yAnchor={1}
+                    >
+                        <div className="customoverlay">
+                            <a
+                                // href="https://map.kakao.com/link/map/11394059"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <span className="title">{marker.content}</span>
+                            </a>
+                        </div>
+
+                    </CustomOverlayMap>
+                ))}
             </Map>
 
             {/*{downCount > 0 && (
